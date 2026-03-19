@@ -37,3 +37,21 @@ public class Result<T>
     public static Result<T> Conflict(string error) =>
         new(false, default, error, ErrorType.Conflict);
 }
+
+public class Result
+{
+    public bool IsSuccess { get; }
+    public string? Error { get; }
+    public ErrorType ErrorType { get; }
+
+    private Result(bool isSuccess, string? error, ErrorType errorType)
+    {
+        IsSuccess = isSuccess;
+        Error = error;
+        ErrorType = errorType;
+    }
+
+    public static Result Success() => new(true, null, ErrorType.None);
+    public static Result Failure(string error, ErrorType type = ErrorType.Failure) => new(false, error, type);
+    public static Result NotFound(string error = "Resource not found") => new(false, error, ErrorType.NotFound);
+}

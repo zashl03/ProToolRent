@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using ProToolRent.Application.Common;
+namespace ProToolRent.Application.Commands.DeleteTool;
 
-namespace ProToolRent.Application.Commands.DeleteTool
-{
-    internal class DeleteToolCommand
-    {
-    }
-}
+public record DeleteToolCommand(Guid Id) : IRequest<Result>;
