@@ -6,6 +6,7 @@ using ProToolRent.Application;
 using ProToolRent.Application.Commands.CreateTool;
 using ProToolRent.Application.Commands.DeleteTool;
 using ProToolRent.Application.Queries.GetToolById;
+using ProToolRent.Application.Queries.GetToolsByUserId;
 using ProToolRent.Application.Common;
 
 namespace ProToolRent.Api.Controllers;
@@ -21,7 +22,7 @@ public class ToolsController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("get-by-id/{id:guid}")]
     [ProducesResponseType(typeof(ToolResponse), 200)]
     [ProducesResponseType(404)]
     public async Task<IActionResult> GetById(Guid id)
@@ -33,6 +34,21 @@ public class ToolsController : ControllerBase
             ErrorType.None => Ok(ToolResponse.FromDto(result.Value!)),
             ErrorType.NotFound => NotFound(new { error = result.Error }),
             _ => BadRequest(new { error = result.Error })
+        };
+    }
+
+    [HttpGet("get-by-owner/{id:guid}")]
+    [ProducesResponseType(typeof(ToolResponse), 200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetToolsByUserAsync(Guid id)
+    {
+        var result = await _mediator.Send(new GetToolsByUserIdQuery(id));
+
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(ToolResponse.FromDtoList(result.Value!)),
+            ErrorType.NotFound => NotFound(new {error = result.Error }),
+            _ => BadRequest(new{ error = result.Error })
         };
     }
 

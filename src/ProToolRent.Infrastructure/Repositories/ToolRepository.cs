@@ -19,6 +19,11 @@ public class ToolRepository : IToolRepository
         return await _context.Tools.FirstOrDefaultAsync(t => t.Id == id, ct);
     }
 
+    public async Task<List<Tool>?> GetToolsByUserAsync(Guid id, CancellationToken ct)
+    {
+        return await _context.Tools.Where(t => t.UserId == id).ToListAsync(ct);
+    }
+
     public async Task AddAsync(Tool tool, CancellationToken ct)
     {
         await _context.Tools.AddAsync(tool, ct);

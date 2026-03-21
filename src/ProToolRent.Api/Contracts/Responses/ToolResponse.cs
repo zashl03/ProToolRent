@@ -19,5 +19,15 @@ public record ToolResponse
         dto.Id, dto.Brand, dto.Name, dto.Power, dto.Description,
         dto.Status, dto.Price, dto.CategoryId, dto.UserId
         );
+
+    public static List<ToolResponse> FromDtoList(List<ToolDto> dtoList)
+    {
+        var list = new List<ToolResponse>();
+        foreach(ToolDto dto in dtoList)
+        {
+            list.Add(FromDto(dto));
+        }
+        return list;
+    }
 }
 public record CreateToolResponse(Guid id);
