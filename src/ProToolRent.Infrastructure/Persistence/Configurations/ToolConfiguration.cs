@@ -16,10 +16,6 @@ public class ToolConfiguration : IEntityTypeConfiguration<Tool>
         builder.Property(t => t.Description)
             .HasMaxLength(1000);
 
-        builder.Property(t => t.Status)
-            .IsRequired()
-            .HasMaxLength(100);
-
         builder.Property(t => t.Price)
             .IsRequired();
 
@@ -33,6 +29,17 @@ public class ToolConfiguration : IEntityTypeConfiguration<Tool>
                 .IsRequired();
             spec.Property(s => s.Power)
                 .HasColumnName("Power")
+                .IsRequired();
+        });
+
+        builder.ComplexProperty(t => t.Quantity, quan =>
+        {
+            quan.Property(q => q.Total)
+                .HasColumnName("TotalQuantity")
+                .IsRequired();
+            quan.Property(q => q.Reserved)
+                .HasColumnName("ReservedQuantity")
+                .HasDefaultValue(0)
                 .IsRequired();
         });
 

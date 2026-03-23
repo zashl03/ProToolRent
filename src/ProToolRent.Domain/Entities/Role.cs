@@ -12,5 +12,6 @@ namespace ProToolRent.Domain.Entities
                 throw new ArgumentException("Name of role is required", nameof(name)); 
             Name = name;
         }
+        
     }
 }

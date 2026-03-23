@@ -22,7 +22,6 @@ public class RoleRepository : IRoleRepository
     public async Task AddAsync(Role role, CancellationToken ct)
     {
         await _context.Roles.AddAsync(role, ct);
-        await _context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct)
@@ -31,7 +30,6 @@ public class RoleRepository : IRoleRepository
         if (role != null)
         {
             _context.Roles.Remove(role);
-            await _context.SaveChangesAsync(ct);
         }
     }
 }

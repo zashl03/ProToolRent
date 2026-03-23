@@ -9,8 +9,9 @@ public record ToolDto
     string Name,
     double Power,
     string Description,
-    string Status,
-    double Price,
+    int TotalQuantity,
+    int ReservedQuantity,
+    decimal Price,
     Guid CategoryId,
     Guid UserId
 )
@@ -23,7 +24,8 @@ public record ToolDto
             tool.Specification.Name,
             tool.Specification.Power,
             tool.Description,
-            tool.Status,
+            tool.Quantity.Total,
+            tool.Quantity.Reserved,
             tool.Price,
             tool.CategoryId,
             tool.UserId);

@@ -27,7 +27,6 @@ public class ToolRepository : IToolRepository
     public async Task AddAsync(Tool tool, CancellationToken ct)
     {
         await _context.Tools.AddAsync(tool, ct);
-        await _context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct)
@@ -37,7 +36,6 @@ public class ToolRepository : IToolRepository
         if (tool != null)
         {
             _context.Tools.Remove(tool);
-            await _context.SaveChangesAsync(ct);
         }
     }
 }

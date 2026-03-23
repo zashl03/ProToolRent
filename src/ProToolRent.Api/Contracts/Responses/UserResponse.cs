@@ -5,9 +5,12 @@ namespace ProToolRent.Api.Contracts.Responses;
 public record UserResponse
 (
     Guid Id,
-    string Fullname,
-    string Organization,
+    string Email,
+    string FirstName,
+    string LastName,
     string City,
+    string Organization,
+    string Phone,
     Guid RoleId
 )
 {
@@ -15,9 +18,12 @@ public record UserResponse
     {
         return new UserResponse(
             dto.Id,
-            dto.Fullname,
-            dto.Organization,
+            dto.Email,
+            dto.FirstName,
+            dto.LastName,
             dto.City,
+            dto.Organization,
+            dto.Phone,
             dto.RoleId);
     }
 }

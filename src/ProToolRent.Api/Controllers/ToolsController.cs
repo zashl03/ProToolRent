@@ -23,8 +23,8 @@ public class ToolsController : ControllerBase
     }
 
     [HttpGet("get-by-id/{id:guid}")]
-    [ProducesResponseType(typeof(ToolResponse), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(ToolResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetToolByIdQuery(id));
@@ -38,8 +38,8 @@ public class ToolsController : ControllerBase
     }
 
     [HttpGet("get-by-owner/{id:guid}")]
-    [ProducesResponseType(typeof(ToolResponse), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(ToolResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetToolsByUserAsync(Guid id)
     {
         var result = await _mediator.Send(new GetToolsByUserIdQuery(id));
@@ -53,15 +53,22 @@ public class ToolsController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CreateToolCommand), 201)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(409)]
+    [ProducesResponseType(typeof(CreateToolResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateToolRequest request)
     {
         var command = new CreateToolCommand(
-            request.Brand, request.Name, request.Power,
-            request.Description, request.Status,
-            request.Price, request.CategoryId, request.UserId);
+            request.Brand, 
+            request.Name, 
+            request.Power,
+            request.Description, 
+            request.TotalQuantity,
+            request.ReservedQuantity, 
+            request.Price, 
+            request.CategoryId,
+            request.UserId
+            );
 
         var result = await _mediator.Send(command);
 
@@ -77,11 +84,13 @@ public class ToolsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(204)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = await _mediator.Send(new DeleteToolCommand(id));
+        var command = new DeleteToolCommand(id);
+
+        var result = await _mediator.Send(command);
 
         return result.ErrorType switch
         {

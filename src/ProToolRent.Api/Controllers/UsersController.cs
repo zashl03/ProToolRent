@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
 using ProToolRent.Application.Commands.CreateUser;
 using ProToolRent.Application.Common;
@@ -19,8 +20,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(UserResponse), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetUserByIdQuery(id));
@@ -34,15 +35,19 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CreateUserCommand), 201)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(409)]
-    public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
+    [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
         var command = new CreateUserCommand(
-            request.Fullname,
-            request.Organization,
+            request.Email,
+            request.PasswordHash,
+            request.FirstName,
+            request.LastName,
             request.City,
+            request.Organization,
+            request.Phone,
             request.RoleId);
 
         var result = await _mediator.Send(command);

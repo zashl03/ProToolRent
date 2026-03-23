@@ -22,7 +22,6 @@ public class UserRepository : IUserRepository
     public async Task AddAsync(User user, CancellationToken ct)
     {
         await _context.Users.AddAsync(user, ct);
-        await _context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct)
@@ -31,7 +30,6 @@ public class UserRepository : IUserRepository
         if(user != null)
         {
             _context.Users.Remove(user);
-            await _context.SaveChangesAsync(ct);
         }
     }
 }
