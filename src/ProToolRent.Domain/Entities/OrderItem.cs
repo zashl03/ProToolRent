@@ -16,7 +16,7 @@ public class OrderItem
 
     private OrderItem() { }
 
-    public OrderItem(DateTime createdDate, DateTime endDate, decimal cost, int quantity, Guid toolId, Tool tool, Guid orderId, Order order)
+    public OrderItem(decimal cost, int quantity, Tool tool)
     {
         if (cost < 0)
             throw new ArgumentException("Cost of orderitem must be more than 0", nameof(cost));
@@ -24,13 +24,9 @@ public class OrderItem
         if (quantity < 0)
             throw new ArgumentException("Quantity of orderitem must be more than 0", nameof(quantity));
 
-        CreatedDate = createdDate;
-        EndDate = endDate;
+        CreatedDate = DateTime.Now;
         Cost = cost;
         Quantity = quantity;
-        ToolId = toolId;
         Tool = tool;
-        OrderId = orderId;
-        Order = order;
     }
 }

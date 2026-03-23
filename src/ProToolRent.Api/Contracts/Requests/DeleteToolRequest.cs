@@ -2,5 +2,5 @@
 
 public record DeleteToolRequest
 (
-    
+    Guid Id
 );

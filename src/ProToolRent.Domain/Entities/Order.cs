@@ -7,16 +7,33 @@ public class Order
     public string Status { get; private set; } = string.Empty;
     public DateTime CreatedDate { get; private set; }
     public DateTime EndDate { get; private set; }
+    public Guid UserProfileId { get; private set; }
     public ICollection<OrderItem> OrderItems { get; private set; } = new List<OrderItem>();
-    private Order() { }
 
-    public Order(string status, DateTime createdDate, DateTime endDate)
+    public Order(Guid userProfileId)
     {
-        if(string.IsNullOrWhiteSpace(status))
-            throw new ArgumentException("Status of order is required", nameof(status));
+        Status = "Создан";
+        CreatedDate = DateTime.Now;
+        UserProfileId = userProfileId; //FIX ВЕЗДЕ
+    }
 
-        Status = status;
-        CreatedDate = createdDate;
-        EndDate = endDate;
+    public bool RemoveItem(Guid id)
+    {
+        var item = OrderItems.FirstOrDefault(x => x.Id == id);
+
+        if (item == null)
+            return false;
+
+        OrderItems.Remove(item);
+        return true;
+    }
+
+    public Guid AddItem(decimal cost, int quantity, Tool tool)
+    {
+        var item = new OrderItem(cost, quantity, tool);
+
+        OrderItems.Add(item);
+
+        return item.Id;
     }
 }

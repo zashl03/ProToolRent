@@ -15,17 +15,19 @@ namespace ProToolRent.Application.Commands.CreateTool
                 .MaximumLength(200).WithMessage("Name cannot exceed 200 chars");
 
             RuleFor(x => x.Power)
-                .Must(power => power > 0).WithMessage("Power must be more 0");
+                .Must(power => power > 0).WithMessage("Power must be more than 0");
 
             RuleFor(x => x.Description)
                 .Length(1000).WithMessage("Description cannot exceed 1000 chars");
 
-            RuleFor(x => x.Status)
-                .NotEmpty().WithMessage("Status is required")
-                .MaximumLength(100).WithMessage("Status cannot exceed 100 chars");
+            RuleFor(x => x.TotalQuantity)
+                .GreaterThan(0).WithMessage("Total quantity must be more than 0");
+
+            RuleFor(x => x.ReservedQuantity)
+                .GreaterThan(0).WithMessage("Reserved quantity must be more than 0");
 
             RuleFor(x => x.Price)
-                .Must(price => price > 0).WithMessage("Price must be more 0");
+                .GreaterThan(0).WithMessage("Price must be more than 0");
         }
     }
 }

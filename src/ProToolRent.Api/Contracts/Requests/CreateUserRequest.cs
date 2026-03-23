@@ -2,8 +2,12 @@
 
 public record CreateUserRequest
 (
-    string Fullname,
-    string Organization,
+    string Email,
+    string PasswordHash,
+    string FirstName,
+    string LastName,
     string City,
+    string Organization,
+    string Phone,
     Guid RoleId
 );

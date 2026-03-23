@@ -22,7 +22,6 @@ public class CategoryRepository : ICategoryRepository
     public async Task AddAsync(Category category, CancellationToken ct)
     {
         await _context.Categories.AddAsync(category, ct);
-        await _context.SaveChangesAsync(ct);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct)
@@ -31,7 +30,6 @@ public class CategoryRepository : ICategoryRepository
         if(category != null)
         {
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync(ct);
         }
     }
 }

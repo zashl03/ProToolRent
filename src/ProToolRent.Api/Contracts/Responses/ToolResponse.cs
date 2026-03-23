@@ -9,15 +9,17 @@ public record ToolResponse
     string Name,
     double Power,
     string Description,
-    string Status,
-    double Price,
+    int TotalQuantity,
+    int ReservedQuantity,
+    decimal Price,
     Guid CategoryId,
     Guid UserId
 )
 {
     public static ToolResponse FromDto(ToolDto dto) => new(
         dto.Id, dto.Brand, dto.Name, dto.Power, dto.Description,
-        dto.Status, dto.Price, dto.CategoryId, dto.UserId
+        dto.TotalQuantity, dto.ReservedQuantity,
+        dto.Price, dto.CategoryId, dto.UserId
         );
 
     public static List<ToolResponse> FromDtoList(List<ToolDto> dtoList)

@@ -1,5 +1,4 @@
-﻿
-namespace ProToolRent.Domain.Interfaces;
+﻿namespace ProToolRent.Domain.Interfaces;
 
 public interface IUnitOfWork
 {

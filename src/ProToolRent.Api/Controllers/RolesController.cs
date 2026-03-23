@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
 using ProToolRent.Application.Commands.CreateRole;
 using ProToolRent.Application.Common;
@@ -18,8 +19,8 @@ public class RolesController : ControllerBase
         _mediator = mediator;
     }
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(RoleResponse), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(RoleResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetRoleByIdQuery(id));
@@ -33,10 +34,10 @@ public class RolesController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CreateRoleCommand), 201)]
+    [ProducesResponseType(typeof(CreateRoleResponse), 201)]
     [ProducesResponseType(400)]
     [ProducesResponseType(409)]
-    public async Task<IActionResult> Create([FromBody] CreateRoleCommand request)
+    public async Task<IActionResult> Create([FromBody] CreateRoleRequest request)
     {
         var command = new CreateRoleCommand(request.Name);
 

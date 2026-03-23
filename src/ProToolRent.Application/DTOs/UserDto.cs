@@ -5,19 +5,25 @@ namespace ProToolRent.Application.DTOs;
 public record UserDto
 (
     Guid Id,
-    string Fullname,
-    string Organization,
+    string Email,
+    string FirstName,
+    string LastName,
     string City,
+    string Organization,
+    string Phone,
     Guid RoleId
 )
 {
-    public static UserDto FromEntity(User user)
+    public static UserDto FromEntity(User user, UserProfile userProfile)
     {
         return new UserDto(
             user.Id,
-            user.Fullname,
-            user.Organization,
-            user.City,
+            user.Email,
+            userProfile.FirstName,
+            userProfile.LastName,
+            userProfile.City,
+            userProfile.Organization,
+            userProfile.Phone,
             user.RoleId);
     }
 }

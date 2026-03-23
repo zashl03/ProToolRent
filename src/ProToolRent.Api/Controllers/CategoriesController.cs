@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
 using ProToolRent.Application.Commands.CreateCategory;
+using ProToolRent.Application.Commands.DeleteCategory;
 using ProToolRent.Application.Common;
 using ProToolRent.Application.Queries.GetCategoryById;
 
@@ -19,8 +21,8 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(UserResponse), 200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetCategoryByIdQuery(id));
@@ -34,10 +36,10 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CreateCategoryCommand), 201)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(409)]
-    public async Task<IActionResult> Create([FromBody] CreateCategoryCommand request)
+    [ProducesResponseType(typeof(CreateCategoryResponse), 201)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
     {
         var command = new CreateCategoryCommand(request.Name, request.ParentId);
 
@@ -50,6 +52,23 @@ public class CategoriesController : ControllerBase
                 new { id = result.Value },
                 new CreateCategoryResponse(result.Value!)),
             ErrorType.Conflict => Conflict(new { error = result.Error }),
+            _ => BadRequest(new { error = result.Error })
+        };
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var command = new DeleteCategoryCommand(id);
+
+        var result = await _mediator.Send(command);
+
+        return result.ErrorType switch
+        {
+            ErrorType.None => NoContent(),
+            ErrorType.NotFound => NotFound(new { error = result.Error }),
             _ => BadRequest(new { error = result.Error })
         };
     }

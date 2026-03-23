@@ -8,7 +8,7 @@ public class Tool
     public Specification Specification { get; private set; }
     public Quantity Quantity { get; private set; }
     public string Description { get; private set; } = string.Empty;
-    public double Price { get; private set; }
+    public decimal Price { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid UserId { get; private set; }
 
@@ -17,7 +17,7 @@ public class Tool
     public Tool(Specification specification,
         Quantity quantity,
         string description, 
-        double price, 
+        decimal price, 
         Guid categoryId, 
         Guid userId)
     {

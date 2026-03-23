@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProToolRent.Domain.Entities;
-using ProToolRent.Domain.ValueObjects;
 
 namespace ProToolRent.Infrastructure.Persistence.Configurations;
 
