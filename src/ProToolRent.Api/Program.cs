@@ -4,6 +4,7 @@ using ProToolRent.Api.Middleware;
 using ProToolRent.Application.Commands.CreateTool;
 using ProToolRent.Application.Common.Behaviors;
 using ProToolRent.Infrastructure;
+using ProToolRent.Infrastructure.Authentication;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -20,9 +21,11 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
-
     //infrastructure
     builder.Services.AddInfrastructure(builder.Configuration);
+
+    //JWT
+    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 
     //MediatR
     builder.Services.AddMediatR(cfg =>
