@@ -1,3 +1,4 @@
+[![License|78](https://img.shields.io/badge/license-MIT-blue)
 # ProToolRent
 Платформа для аренды инструментов между пользователями.
 
@@ -116,6 +117,4 @@ Refresh token хранится в `HttpOnly` cookie.
 - Backend: в разработке
 - Frontend: в разработке
 
-## License
 
-MIT
