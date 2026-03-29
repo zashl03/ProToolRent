@@ -18,7 +18,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken ct)
     {
-        var order = new Order(request.UserProfileId);
+        var order = new Order(request.UserId);
 
         await _orderRepository.AddAsync(order, ct);
 

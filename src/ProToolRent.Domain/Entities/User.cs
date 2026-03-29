@@ -1,14 +1,20 @@
-﻿namespace ProToolRent.Domain.Entities;
+﻿using ProToolRent.Domain.Enums;
+
+namespace ProToolRent.Domain.Entities;
 
 public class User
 {
     public Guid Id { get; private set; }
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
-    public Guid RoleId { get; private set; }
+    public string? RefreshToken { get; private set; }
+    public DateTime? RefreshTokenExpiresAt { get; private set; }
+    public UserRole Role { get; private set; }
+    public Guid ProfileId { get; private set; }
+    public UserProfile Profile { get; private set; } = null!;
 
     private User() { }
-    public User(string email, string passwordHash, Guid roleId)
+    public User(string email, string passwordHash, UserRole role)
     {
         if (string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email of user is required", nameof(email));
@@ -17,6 +23,37 @@ public class User
 
         Email = email;
         PasswordHash = passwordHash;
-        RoleId = roleId;
+        Role = role;
+    }
+
+    public void UpdatePasswordHash(string newPasswordHash)
+    {
+        if(string.IsNullOrWhiteSpace(newPasswordHash))
+            throw new ArgumentException("New password is required", nameof(newPasswordHash));
+        PasswordHash = newPasswordHash;
+    }
+
+    public void SetRefreshToken(string refreshToken, DateTime expiresAt)
+    {
+        if(string.IsNullOrWhiteSpace(refreshToken))
+            throw new ArgumentException("Refresh token is required", nameof(refreshToken));
+        if(expiresAt <= DateTime.UtcNow)
+            throw new ArgumentException("Expiration must be in the future", nameof(expiresAt));
+
+        RefreshToken = refreshToken;
+        RefreshTokenExpiresAt = expiresAt;
+    }
+
+    public void ResetRefreshToken()
+    {
+        RefreshToken = null;
+        RefreshTokenExpiresAt = null;
+    }
+
+    public void SetProfile(UserProfile profile)
+    {
+        Profile = profile;
+        ProfileId = profile.Id;
+        Profile.SetUser(this);
     }
 }

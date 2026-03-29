@@ -31,10 +31,5 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
         builder.Property(up => up.Phone)
             .IsRequired()
             .HasMaxLength(50);
-
-        builder.HasOne<User>()
-            .WithOne()
-            .HasForeignKey<UserProfile>(up => up.UserId)
-            .IsRequired();
     }
 }

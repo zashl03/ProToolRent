@@ -9,5 +9,5 @@ public record CreateUserRequest
     string City,
     string Organization,
     string Phone,
-    Guid RoleId
+    string Role
 );

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
@@ -38,13 +39,14 @@ public class OrdersController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Tenant")]
     [HttpPost]
     [ProducesResponseType(typeof(CreateOrderResponse),StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateOrderRequest request)
     {
-        var command = new CreateOrderCommand(request.UserProfileId);
+        var command = new CreateOrderCommand(request.UserId);
 
         var result = await _mediator.Send(command);
 
@@ -59,6 +61,7 @@ public class OrdersController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Tenant")]
     [HttpPost("{orderId}/items")]
     [ProducesResponseType(typeof(CreateOrderItemResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -5,5 +5,5 @@ namespace ProToolRent.Application.Commands.CreateOrder;
 
 public record CreateOrderCommand
 (
-    Guid UserProfileId
+    Guid UserId
 ) : IRequest<Result<Guid>>;

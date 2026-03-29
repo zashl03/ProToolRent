@@ -4,4 +4,4 @@ using ProToolRent.Application.DTOs;
 
 namespace ProToolRent.Application.Queries.GetRoleById;
 
-public record GetRoleByIdQuery(Guid Id) : IRequest<Result<RoleDto>>;
+public record GetRoleByIdQuery(Guid Id) : IRequest<Result<string>>;

@@ -5,24 +5,24 @@ using ProToolRent.Domain.Interfaces;
 
 namespace ProToolRent.Application.Queries.GetRoleById;
 
-public class GetRoleByIdQueryHandler : IRequestHandler<GetRoleByIdQuery, Result<RoleDto>>
+public class GetRoleByIdQueryHandler : IRequestHandler<GetRoleByIdQuery, Result<string>>
 {
-    private readonly IRoleRepository _roleRepository;
+    private readonly IUserRepository _userRepository;
 
-    public GetRoleByIdQueryHandler(IRoleRepository roleRepository)
+    public GetRoleByIdQueryHandler(IUserRepository userRepository)
     {
-        _roleRepository = roleRepository;
+        _userRepository = userRepository;
     }
 
-    public async Task<Result<RoleDto>> Handle(GetRoleByIdQuery request, CancellationToken ct)
+    public async Task<Result<string>> Handle(GetRoleByIdQuery request, CancellationToken ct)
     {
-        var role = await _roleRepository.GetByIdAsync(request.Id, ct);
+        var user = await _userRepository.GetByIdAsync(request.Id, ct);
 
-        if (role == null)
+        if (user == null)
         {
-            return Result<RoleDto>.NotFound($"Role with {request.Id} not found");
+            return Result<string>.NotFound($"Role of user with {request.Id} not found");
         }
 
-        return Result<RoleDto>.Success(RoleDto.FromEntity(role));
+        return Result<string>.Success(user.Role.ToString());
     }
 }

@@ -2,5 +2,5 @@
 
 public record CreateOrderRequest
 (
-    Guid UserProfileId
+    Guid UserId
 );

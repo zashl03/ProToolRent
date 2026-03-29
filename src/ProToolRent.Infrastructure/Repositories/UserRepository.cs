@@ -16,7 +16,17 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetByIdAsync(Guid id, CancellationToken ct)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
+        return await _context.Users.Include(u => u.Profile).FirstOrDefaultAsync(u => u.Id == id, ct);
+    }
+
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken ct)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email, ct);
+    }
+
+    public async Task<User?> GetByRefreshTokenAsync(string refreshToken, CancellationToken ct)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken, ct);
     }
 
     public async Task AddAsync(User user, CancellationToken ct)

@@ -6,12 +6,12 @@ public record UserResponse
 (
     Guid Id,
     string Email,
-    string FirstName,
-    string LastName,
-    string City,
-    string Organization,
-    string Phone,
-    Guid RoleId
+    string? FirstName,
+    string? LastName,
+    string? City,
+    string? Organization,
+    string? Phone,
+    string Role
 )
 {
     public static UserResponse FromDto(UserDto dto)
@@ -24,7 +24,7 @@ public record UserResponse
             dto.City,
             dto.Organization,
             dto.Phone,
-            dto.RoleId);
+            dto.Role);
     }
 }
 

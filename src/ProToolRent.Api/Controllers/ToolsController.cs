@@ -8,6 +8,7 @@ using ProToolRent.Application.Commands.DeleteTool;
 using ProToolRent.Application.Queries.GetToolById;
 using ProToolRent.Application.Queries.GetToolsByUserId;
 using ProToolRent.Application.Common;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProToolRent.Api.Controllers;
 
@@ -22,6 +23,7 @@ public class ToolsController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize(Roles = "Admin,Landlord")]
     [HttpGet("get-by-id/{id:guid}")]
     [ProducesResponseType(typeof(ToolResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +39,7 @@ public class ToolsController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Landlord")]
     [HttpGet("get-by-owner/{id:guid}")]
     [ProducesResponseType(typeof(ToolResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -52,6 +55,7 @@ public class ToolsController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Landlord")]
     [HttpPost]
     [ProducesResponseType(typeof(CreateToolResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,6 +87,7 @@ public class ToolsController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Landlord")]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

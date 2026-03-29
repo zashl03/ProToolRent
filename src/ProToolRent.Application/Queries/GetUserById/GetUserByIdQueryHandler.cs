@@ -8,25 +8,21 @@ namespace ProToolRent.Application.Queries.GetUserById;
 public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, Result<UserDto>>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IUserProfileRepository _userProfileRepository;
 
-    public GetUserByIdQueryHandler(IUserRepository userRepository, IUserProfileRepository userProfileRepository)
+    public GetUserByIdQueryHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _userProfileRepository = userProfileRepository;
     }
 
     public async Task<Result<UserDto>> Handle(GetUserByIdQuery request, CancellationToken ct)
     {
-        var userProfile = await _userProfileRepository.GetByIdAsync(request.UserProfileId);
+        var user = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (userProfile == null)
+        if (user == null)
         {
-            return Result<UserDto>.NotFound($"User with {request.UserProfileId} not found");
+            return Result<UserDto>.NotFound($"User with {request.UserId} not found");
         }
 
-        var user = await _userRepository.GetByIdAsync(userProfile.UserId, ct);
-
-        return Result<UserDto>.Success(UserDto.FromEntity(user!, userProfile));
+        return Result<UserDto>.Success(UserDto.FromEntity(user));
     }
 }

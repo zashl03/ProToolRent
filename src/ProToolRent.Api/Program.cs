@@ -1,9 +1,12 @@
 using FluentValidation;
 using MediatR;
+using ProToolRent.Api.Extensions;
 using ProToolRent.Api.Middleware;
 using ProToolRent.Application.Commands.CreateTool;
 using ProToolRent.Application.Common.Behaviors;
 using ProToolRent.Infrastructure;
+using ProToolRent.Infrastructure.Authentication;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -33,12 +36,39 @@ try
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
     builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+    //JWT
+    builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+    builder.Services.AddJwtAuthentication(builder.Configuration);
+
     //API
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(c =>
+    builder.Services.AddSwaggerGen(options =>
     {
-        c.SwaggerDoc("v1", new() { Title = "ProToolRent API", Version = "v1"});
+        options.SwaggerDoc("v1", new() { Title = "ProToolRent API", Version = "v1"});
+        options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "¬ведите JWT токен",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
     });
     builder.Services.AddHealthChecks();
 
@@ -48,6 +78,9 @@ try
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHttpsRedirection();
+    app.UseAuthentication();
+    app.UseAuthorization();
+
     app.MapControllers();
     app.MapHealthChecks("/health");
 

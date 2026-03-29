@@ -21,9 +21,13 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(200)
             .IsRequired();
 
-        builder.HasOne<Role>()
-            .WithMany()
-            .HasForeignKey(u => u.RoleId)
+        builder.Property(u => u.Role)
+            .IsRequired()
+            .HasConversion<string>();
+
+        builder.HasOne(u => u.Profile)
+            .WithOne(up => up.User)
+            .HasForeignKey<UserProfile>(up => up.UserId)
             .IsRequired();
     }
 }
