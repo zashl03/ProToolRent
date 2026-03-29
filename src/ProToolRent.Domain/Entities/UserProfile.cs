@@ -3,15 +3,16 @@
 public class UserProfile
 {
     public Guid Id { get; private set; }
-    public string FirstName { get; private set; } = string.Empty;
-    public string LastName { get; private set;} = string.Empty;
-    public string City { get; private set; } = string.Empty;
-    public string Organization { get; private set; } = string.Empty;
-    public string Phone { get; private set; } = string.Empty;
+    public string? FirstName { get; private set; } = string.Empty;
+    public string? LastName { get; private set;} = string.Empty;
+    public string? City { get; private set; } = string.Empty;
+    public string? Organization { get; private set; } = string.Empty;
+    public string? Phone { get; private set; } = string.Empty;
     public Guid UserId { get; private set; }
+    public User User { get; private set; } = null!;
 
     private UserProfile() { }
-    public UserProfile(string firstName, string lastName, string city, string organization, string phone, Guid userId)
+    public UserProfile(string firstName, string lastName, string city, string organization, string phone)
     {
         if (string.IsNullOrWhiteSpace(firstName))
             throw new ArgumentException("FirstName of user is required", nameof(firstName));
@@ -29,6 +30,16 @@ public class UserProfile
         City = city;
         Organization = organization;
         Phone = phone;
-        UserId = userId;
+    }
+
+    public static UserProfile CreateEmpty()
+    {
+        return new UserProfile();
+    }
+
+    public void SetUser(User user)
+    {
+        User = user;
+        UserId = user.Id;
     }
 }

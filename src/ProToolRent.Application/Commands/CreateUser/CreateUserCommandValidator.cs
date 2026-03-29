@@ -31,7 +31,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .NotEmpty().WithMessage("Phone of user is required")
             .MaximumLength(50).WithMessage("Phone cannot exceed 50 chars");
 
-        RuleFor(u => u.RoleId)
+        RuleFor(u => u.Role)
             .NotNull().WithMessage("RoleId is required");
     }
 }

@@ -41,6 +41,6 @@ public class OrderRepository : IOrderRepository
 
     public async Task<List<Order>> GetOrderByUserAsync(Guid id, CancellationToken ct)
     {
-        return await _context.Orders.Where(o => o.UserProfileId == id).ToListAsync();
+        return await _context.Orders.Where(o => o.UserId == id).ToListAsync();
     }
 }

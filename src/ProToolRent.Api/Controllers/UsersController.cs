@@ -1,10 +1,12 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
 using ProToolRent.Application.Commands.CreateUser;
 using ProToolRent.Application.Common;
 using ProToolRent.Application.Queries.GetUserById;
+using ProToolRent.Domain.Enums;
 
 namespace ProToolRent.Api.Controllers;
 
@@ -19,6 +21,7 @@ public class UsersController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,6 +37,7 @@ public class UsersController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     [ProducesResponseType(typeof(CreateUserResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +52,7 @@ public class UsersController : ControllerBase
             request.City,
             request.Organization,
             request.Phone,
-            request.RoleId);
+            Enum.Parse<UserRole>(request.Role));
 
         var result = await _mediator.Send(command);
 

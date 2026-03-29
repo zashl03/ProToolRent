@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProToolRent.Api.Contracts.Requests;
 using ProToolRent.Api.Contracts.Responses;
@@ -20,6 +21,7 @@ public class CategoriesController : ControllerBase
         _mediator = mediator;
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(CategoryResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -34,7 +36,7 @@ public class CategoriesController : ControllerBase
             _ => BadRequest(new { error = result.Error })
         };
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     [ProducesResponseType(typeof(CreateCategoryResponse), 201)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,6 +58,7 @@ public class CategoriesController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

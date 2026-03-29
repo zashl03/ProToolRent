@@ -7,14 +7,14 @@ public class Order
     public string Status { get; private set; } = string.Empty;
     public DateTime CreatedDate { get; private set; }
     public DateTime EndDate { get; private set; }
-    public Guid UserProfileId { get; private set; }
+    public Guid UserId { get; private set; }
     public ICollection<OrderItem> OrderItems { get; private set; } = new List<OrderItem>();
 
-    public Order(Guid userProfileId)
+    public Order(Guid userId)
     {
         Status = "Создан";
-        CreatedDate = DateTime.Now;
-        UserProfileId = userProfileId; //FIX ВЕЗДЕ
+        CreatedDate = DateTime.UtcNow;
+        UserId = userId; 
     }
 
     public bool RemoveItem(Guid id)
