@@ -55,6 +55,25 @@ public class ToolsController : ControllerBase
         };
     }
 
+    [Authorize]
+    [HttpGet("paged")]
+    [ProducesResponseType(typeof(PagedResult<ToolResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetPagedTools([FromQuery] GetPagedToolsRequest request)
+    {
+        var result = await _mediator.Send(new GetPagedToolsQuery(request.PageNumber, request.PageSize));
+
+        PagedResult<ToolResponse> response = new(
+            result.Value!.Items.Select(ToolResponse.FromDto).ToList(),
+            result.Value.TotalCount
+        );
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(response),
+            _ => BadRequest(new { error = result.Error })
+        };
+    }
+
     [Authorize(Roles = "Admin,Landlord")]
     [HttpPost]
     [ProducesResponseType(typeof(CreateToolResponse), StatusCodes.Status201Created)]

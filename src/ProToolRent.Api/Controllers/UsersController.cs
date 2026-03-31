@@ -66,4 +66,29 @@ public class UsersController : ControllerBase
             _ => BadRequest(new { error = result.Error })
         };
     }
+
+    [Authorize]
+    [HttpPut("{id:guid}/profile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
+    {
+        var command = new UpdateProfileCommand(
+            request.UserId,
+            request.FirstName,
+            request.LastName,
+            request.City,
+            request.Organization,
+            request.Phone);
+
+        var result = await _mediator.Send(command);
+
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(),
+            ErrorType.NotFound => NotFound(new { error = result.Error }),
+            _ => BadRequest(new { error = result.Error })
+        };
+    }
 }
