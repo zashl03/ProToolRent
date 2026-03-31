@@ -32,6 +32,26 @@ public class UserProfile
         Phone = phone;
     }
 
+    public void UpdateProfile(string firstName, string lastName, string city, string organization, string phone)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new ArgumentException("FirstName of user is required", nameof(firstName));
+        if (string.IsNullOrWhiteSpace(lastName))
+            throw new ArgumentException("LastName of user is required", nameof(lastName));
+        if (string.IsNullOrWhiteSpace(city))
+            throw new ArgumentException("City of user is required", nameof(city));
+        if (string.IsNullOrWhiteSpace(organization))
+            throw new ArgumentException("Organization of user is required", nameof(organization));
+        if (string.IsNullOrWhiteSpace(phone))
+            throw new ArgumentException("Phone of user is required", nameof(phone));
+
+        FirstName = firstName;
+        LastName = lastName;
+        City = city;
+        Organization = organization;
+        Phone = phone;
+    }
+
     public static UserProfile CreateEmpty()
     {
         return new UserProfile();

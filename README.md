@@ -1,4 +1,4 @@
-[![License|78](https://img.shields.io/badge/license-MIT-blue)
+![License|78](https://img.shields.io/badge/license-MIT-blue)
 # ProToolRent
 Платформа для аренды инструментов между пользователями.
 

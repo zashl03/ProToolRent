@@ -1,4 +1,5 @@
-﻿using ProToolRent.Domain.Enums;
+﻿using System.IO.Compression;
+using ProToolRent.Domain.Enums;
 
 namespace ProToolRent.Domain.Entities;
 
@@ -24,6 +25,11 @@ public class User
         Email = email;
         PasswordHash = passwordHash;
         Role = role;
+    }
+
+    public void UpdateUser(string firstName, string lastName, string city, string organization, string phone)
+    {
+        Profile.UpdateProfile(firstName, lastName, city, organization, phone);
     }
 
     public void UpdatePasswordHash(string newPasswordHash)
