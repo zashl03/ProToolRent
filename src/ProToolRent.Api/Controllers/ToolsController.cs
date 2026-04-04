@@ -9,6 +9,7 @@ using ProToolRent.Application.Queries.GetToolById;
 using ProToolRent.Application.Queries.GetToolsByUserId;
 using ProToolRent.Application.Common;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ProToolRent.Api.Controllers;
 
@@ -79,16 +80,21 @@ public class ToolsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create([FromBody] CreateToolRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            return Unauthorized(new { error = "Invalid user ID in token" });
+        }
+
         var command = new CreateToolCommand(
             request.Brand, 
             request.Name, 
             request.Power,
             request.Description, 
             request.TotalQuantity,
-            request.ReservedQuantity, 
             request.Price, 
             request.CategoryId,
-            request.UserId
+            userId
             );
 
         var result = await _mediator.Send(command);
@@ -119,6 +125,25 @@ public class ToolsController : ControllerBase
             ErrorType.None => NoContent(),
             ErrorType.NotFound => NotFound(new { error = result.Error }),
             _ => BadRequest(new { error = result.Error }) 
+        };
+    }
+
+    [Authorize(Roles = "Admin,Landlord")]
+    [HttpGet("my")]
+    public async Task<IActionResult> GetMyTools()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        if(!Guid.TryParse(userIdClaim, out Guid userId))
+        {
+            return Unauthorized(new { error = "Invalid user ID in token" });
+        }
+
+        var result = await _mediator.Send(new GetToolsQuery(userId));
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(ToolResponse.FromDtoList(result.Value!)),
+            ErrorType.NotFound => NotFound(new { error = result.Error }),
+            _ => BadRequest(new { error = result.Error })
         };
     }
 }

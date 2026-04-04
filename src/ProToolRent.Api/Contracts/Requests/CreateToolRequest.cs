@@ -7,8 +7,6 @@ public record CreateToolRequest
     double Power,
     string Description,
     int TotalQuantity,
-    int ReservedQuantity,
     decimal Price,
-    Guid CategoryId,
-    Guid UserId
+    Guid CategoryId
 );

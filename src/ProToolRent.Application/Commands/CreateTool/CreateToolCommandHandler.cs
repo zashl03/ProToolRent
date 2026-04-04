@@ -22,7 +22,7 @@ public class CreateToolCommandHandler : IRequestHandler<CreateToolCommand, Resul
     {
         var specification = new Specification(request.Brand, request.Name, request.Power);
 
-        var quantity = new Quantity(request.TotalQuantity, request.ReservedQuantity);
+        var quantity = new Quantity(request.TotalQuantity);
 
         var tool = new Tool(specification, quantity, request.Description, 
             request.Price, request.CategoryId, request.UserId);
