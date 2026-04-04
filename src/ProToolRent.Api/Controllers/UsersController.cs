@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProToolRent.Api.Contracts.Requests;
@@ -28,6 +29,27 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetUserByIdQuery(id));
+
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(UserResponse.FromDto(result.Value!)),
+            ErrorType.NotFound => NotFound(new { error = result.Error }),
+            _ => BadRequest(new { error = result.Error })
+        };
+    }
+    
+    [Authorize]
+    [HttpGet("me")]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetProfile()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim is null)
+            return Unauthorized();
+
+        var result = await _mediator.Send(new GetProfileQuery(Guid.Parse(userIdClaim)));
 
         return result.ErrorType switch
         {
@@ -68,14 +90,18 @@ public class UsersController : ControllerBase
     }
 
     [Authorize]
-    [HttpPut("{id:guid}/profile")]
+    [HttpPut("edit/profile")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim is null)
+            return Unauthorized();
+
         var command = new UpdateProfileCommand(
-            request.UserId,
+            Guid.Parse(userIdClaim),
             request.FirstName,
             request.LastName,
             request.City,
