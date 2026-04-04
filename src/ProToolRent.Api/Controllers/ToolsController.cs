@@ -23,7 +23,6 @@ public class ToolsController : ControllerBase
         _mediator = mediator;
     }
 
-    [Authorize(Roles = "Admin,Landlord")]
     [HttpGet("get-by-id/{id:guid}")]
     [ProducesResponseType(typeof(ToolResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -55,7 +54,6 @@ public class ToolsController : ControllerBase
         };
     }
 
-    [Authorize]
     [HttpGet("paged")]
     [ProducesResponseType(typeof(PagedResult<ToolResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

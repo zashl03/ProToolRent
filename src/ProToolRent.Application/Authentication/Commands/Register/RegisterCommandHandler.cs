@@ -1,6 +1,4 @@
-﻿
-
-using MediatR;
+﻿using MediatR;
 using ProToolRent.Application.Authentication.Contracts;
 using ProToolRent.Application.Common;
 using ProToolRent.Application.Interfaces;
@@ -31,6 +29,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
 
     public async Task<Result<AuthResponse>> Handle(RegisterCommand request, CancellationToken ct)
     {
+        if (request.Password != request.RepeatPassword)
+        {
+            return Result<AuthResponse>.Conflict("Passwords do not match");
+        }
         var isUserExist = await _userRepository.GetByEmailAsync(request.Email, ct);
         if (isUserExist != null)
         {
@@ -52,13 +54,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         var userProfile = UserProfile.CreateEmpty();
         user.SetProfile(userProfile);
 
-        var accessToken = _jwtProvider.GenerateAccessToken(user);
         var refreshToken = _jwtProvider.GenerateRefreshToken();
 
         user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
         await _userRepository.AddAsync(user, ct);
         await _unitOfWork.SaveChangeAsync(ct);
+
+        var accessToken = _jwtProvider.GenerateAccessToken(user);
 
         var authResponse = new AuthResponse(user.Id, accessToken, refreshToken, request.Role);
 

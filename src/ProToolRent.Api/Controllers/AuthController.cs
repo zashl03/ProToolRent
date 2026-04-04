@@ -29,7 +29,7 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        var command = new RegisterCommand(request.Email, request.Password, request.Role);
+        var command = new RegisterCommand(request.Email, request.Password, request.RepeatPassword, request.Role);
 
         var result = await _mediator.Send(command);
 
