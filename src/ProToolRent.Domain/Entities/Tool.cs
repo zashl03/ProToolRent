@@ -11,6 +11,7 @@ public class Tool
     public decimal Price { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid UserId { get; private set; }
+    public string ImageUrl {get; private set; }
 
     private Tool() { }
 
@@ -29,5 +30,10 @@ public class Tool
         Price = price;
         CategoryId = categoryId;
         UserId = userId;
+    }
+
+    public void UploadImage(string imageUrl)
+    {
+        ImageUrl = imageUrl;
     }
 }

@@ -13,7 +13,8 @@ public record ToolDto
     int ReservedQuantity,
     decimal Price,
     Guid CategoryId,
-    Guid UserId
+    Guid UserId,
+    string ImageUrl
 )
 {
     public static ToolDto FromEntity(Tool tool)
@@ -28,7 +29,8 @@ public record ToolDto
             tool.Quantity.Reserved,
             tool.Price,
             tool.CategoryId,
-            tool.UserId);
+            tool.UserId,
+            tool.ImageUrl);
     }
 }
 

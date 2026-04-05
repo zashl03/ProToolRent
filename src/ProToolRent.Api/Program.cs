@@ -8,6 +8,7 @@ using ProToolRent.Infrastructure;
 using ProToolRent.Infrastructure.Authentication;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -94,6 +95,13 @@ try
     app.UseCors("AllowFrontend");
     app.UseAuthentication();
     app.UseAuthorization();
+    app.UseStaticFiles(new StaticFileOptions
+    {
+       FileProvider = new PhysicalFileProvider (
+            Path.Combine(builder.Environment.ContentRootPath, "image")
+       ),
+       RequestPath = "/images"
+    });
 
     app.MapControllers();
     app.MapHealthChecks("/health");

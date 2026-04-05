@@ -152,4 +152,23 @@ public class ToolsController : ControllerBase
             _ => BadRequest(new { error = result.Error })
         };
     }
+
+    [HttpPost("{id:guid}/image")]
+    public async Task<IActionResult> UploadImage([FromBody] UploadImageRequest request, CancellationToken ct)
+    {
+        var folder = Path.Combine("wwwroot", "images", "tools");
+        Directory.CreateDirectory(folder);
+
+        var fileName = $"{request.ToolId}{Path.GetExtension(request.File.FileName)}";
+        var filePath = Path.Combine(folder, fileName);
+
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await request.File.CopyToAsync(stream);
+
+        var imageUrl = $"/images/tools/{fileName}";
+
+        await _mediator.Send(new UploadToolImageCommand(request.ToolId, imageUrl), ct);
+
+        return Ok(new { imageUrl });
+    }
 }

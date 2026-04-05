@@ -24,8 +24,13 @@ public class CreateToolCommandHandler : IRequestHandler<CreateToolCommand, Resul
 
         var quantity = new Quantity(request.TotalQuantity);
 
-        var tool = new Tool(specification, quantity, request.Description, 
-            request.Price, request.CategoryId, request.UserId);
+        var tool = new Tool(
+            specification, 
+            quantity, 
+            request.Description, 
+            request.Price, 
+            request.CategoryId, 
+            request.UserId);
 
         await _repository.AddAsync(tool, ct);
 
