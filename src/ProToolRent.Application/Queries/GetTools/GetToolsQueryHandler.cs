@@ -3,7 +3,7 @@ using ProToolRent.Application.Common;
 using ProToolRent.Application.DTOs;
 using ProToolRent.Domain.Interfaces;
 
-public class GetToolsQueryHandler : IRequestHandler<GetToolsQuery, Result<List<ToolDto>>>
+public class GetToolsQueryHandler : IRequestHandler<GetToolsQuery, Result<PagedResult<ToolDto>>>
 {
     private readonly IToolRepository _toolRepository;
 
@@ -12,9 +12,10 @@ public class GetToolsQueryHandler : IRequestHandler<GetToolsQuery, Result<List<T
         _toolRepository = toolRepository;
     }
 
-    public async Task<Result<List<ToolDto>>> Handle(GetToolsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedResult<ToolDto>>> Handle(GetToolsQuery request, CancellationToken cancellationToken)
     {
-        var tools = await _toolRepository.GetToolsByUserAsync(request.UserId, cancellationToken);
-        return Result<List<ToolDto>>.Success(tools.Select(ToolDto.FromEntity).ToList());
+        var tools = await _toolRepository.GetPagedAsync(request.UserId, request.PageNumber, request.PageSize, cancellationToken);
+        PagedResult<ToolDto> pagedTools = new PagedResult<ToolDto>(tools.Items.Select(ToolDto.FromEntity).ToList(), tools.TotalCount);
+        return Result<PagedResult<ToolDto>>.Success(pagedTools);
     }
 }
