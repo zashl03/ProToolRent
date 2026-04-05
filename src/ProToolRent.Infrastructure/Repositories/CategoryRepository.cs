@@ -32,4 +32,9 @@ public class CategoryRepository : ICategoryRepository
             _context.Categories.Remove(category);
         }
     }
+
+    public async Task<List<Category>> ListAsync(CancellationToken ct)
+    {
+        return await _context.Categories.ToListAsync(ct);
+    }
 }

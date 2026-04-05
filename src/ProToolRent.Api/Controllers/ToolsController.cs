@@ -128,9 +128,11 @@ public class ToolsController : ControllerBase
         };
     }
 
-    [Authorize(Roles = "Admin,Landlord")]
+    [Authorize(Roles = "Landlord")]
     [HttpGet("my")]
-    public async Task<IActionResult> GetMyTools()
+    [ProducesResponseType(typeof(PagedResult<ToolResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetMyTools([FromQuery] GetPagedToolsRequest request)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
         if(!Guid.TryParse(userIdClaim, out Guid userId))
@@ -138,11 +140,15 @@ public class ToolsController : ControllerBase
             return Unauthorized(new { error = "Invalid user ID in token" });
         }
 
-        var result = await _mediator.Send(new GetToolsQuery(userId));
+        var result = await _mediator.Send(new GetToolsQuery(userId, request.PageNumber, request.PageSize));
+
+        PagedResult<ToolResponse> response = new(
+            result.Value!.Items.Select(ToolResponse.FromDto).ToList(),
+            result.Value.TotalCount
+        );
         return result.ErrorType switch
         {
-            ErrorType.None => Ok(ToolResponse.FromDtoList(result.Value!)),
-            ErrorType.NotFound => NotFound(new { error = result.Error }),
+            ErrorType.None => Ok(response),
             _ => BadRequest(new { error = result.Error })
         };
     }

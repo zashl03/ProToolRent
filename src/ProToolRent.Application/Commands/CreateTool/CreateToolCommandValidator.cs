@@ -23,9 +23,6 @@ namespace ProToolRent.Application.Commands.CreateTool
             RuleFor(x => x.TotalQuantity)
                 .GreaterThan(0).WithMessage("Total quantity must be more than 0");
 
-            RuleFor(x => x.ReservedQuantity)
-                .GreaterThan(0).WithMessage("Reserved quantity must be more than 0");
-
             RuleFor(x => x.Price)
                 .GreaterThan(0).WithMessage("Price must be more than 0");
         }

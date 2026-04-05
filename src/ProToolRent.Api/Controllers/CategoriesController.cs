@@ -75,4 +75,18 @@ public class CategoriesController : ControllerBase
             _ => BadRequest(new { error = result.Error })
         };
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> List()
+    {
+        var result = await _mediator.Send(new GetCategoriesQuery());
+
+        return result.ErrorType switch
+        {
+            ErrorType.None => Ok(result.Value),
+            _ => BadRequest(new { error = result.Error })
+        };
+    }
 }

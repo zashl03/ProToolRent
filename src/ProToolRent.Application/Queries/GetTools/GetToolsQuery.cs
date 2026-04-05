@@ -4,5 +4,7 @@ using ProToolRent.Application.DTOs;
 
 public record GetToolsQuery
 (
-    Guid UserId
-): IRequest<Result<List<ToolDto>>>;
+    Guid UserId,
+    int PageNumber,
+    int PageSize
+): IRequest<Result<PagedResult<ToolDto>>>;
