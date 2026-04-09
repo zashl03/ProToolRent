@@ -3,8 +3,8 @@
 public record OrderItemDto
 (
     Guid Id,
-    DateTime CreatedDate,
-    DateTime EndDate,
+    DateOnly CreatedDate,
+    DateOnly EndDate,
     decimal Cost,
     int Quantity,
     Guid ToolId

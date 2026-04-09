@@ -32,7 +32,7 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
             return Result<Guid>.NotFound($"Tool with {request.ToolId} not found");
         }
 
-        var orderItemId = order.AddItem(request.Cost, request.Quantity, tool);
+        var orderItemId = order.AddItem(request.StartDate, request.EndDate, request.Quantity, tool);
 
         await _unitOfWork.SaveChangeAsync(ct);
 

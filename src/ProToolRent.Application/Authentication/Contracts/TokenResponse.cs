@@ -4,5 +4,6 @@ namespace ProToolRent.Application.Authentication.Contracts;
 public record TokenResponse
 (
     string AccessToken,
-    string RefreshToken
+    string RefreshToken,
+    string Role
 );

@@ -2,5 +2,6 @@
 
 public record AccessTokenResponse
 (
-    string AccessToken
+    string AccessToken,
+    string Role
 );

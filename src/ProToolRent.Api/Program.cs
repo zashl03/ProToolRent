@@ -8,6 +8,7 @@ using ProToolRent.Infrastructure;
 using ProToolRent.Infrastructure.Authentication;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Microsoft.Extensions.FileProviders;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -90,7 +91,16 @@ try
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHttpsRedirection();
+    var imagesPath = Path.Combine(builder.Environment.WebRootPath ?? 
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot"), "images");
+    Directory.CreateDirectory(imagesPath);
+
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(imagesPath),
+        RequestPath = "/images"
+    });
+    //app.UseHttpsRedirection();
     app.UseCors("AllowFrontend");
     app.UseAuthentication();
     app.UseAuthorization();

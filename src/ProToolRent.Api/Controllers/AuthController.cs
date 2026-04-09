@@ -125,8 +125,8 @@ public class AuthController : ControllerBase
             };
         }
 
-        Response.AppendRefreshToken(refreshToken);
+        Response.AppendRefreshToken(result.Value!.RefreshToken);
 
-        return Ok(new AccessTokenResponse(result.Value!.AccessToken));
+        return Ok(new AccessTokenResponse(result.Value!.AccessToken, result.Value!.Role));
     }
 }

@@ -39,8 +39,21 @@ public class OrderRepository : IOrderRepository
         return await _context.OrderItems.FirstOrDefaultAsync(o => o.Id == id, ct);
     }
 
-    public async Task<List<Order>> GetOrderByUserAsync(Guid id, CancellationToken ct)
+    public async Task<List<Order>> GetOrdersByTenantAsync(Guid id, CancellationToken ct)
     {
-        return await _context.Orders.Where(o => o.UserId == id).ToListAsync();
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Tool)
+            .Where(o => o.UserId == id)
+            .ToListAsync();
+    }
+
+    public async Task<List<Order>> GetOrdersByLandlordAsync(Guid id, CancellationToken ct)
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Tool)
+            .Where(o => o.OrderItems.Any(oi => oi.Tool.UserId == id))
+            .ToListAsync();
     }
 }

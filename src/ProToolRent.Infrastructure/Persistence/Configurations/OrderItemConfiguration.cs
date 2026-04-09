@@ -17,9 +17,6 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(oi => oi.CreatedDate)
             .IsRequired();
 
-        builder.Property(oi => oi.EndDate)
-            .HasDefaultValue(DateTime.MaxValue);
-
         builder.Property(oi => oi.Cost)
             .IsRequired();
 

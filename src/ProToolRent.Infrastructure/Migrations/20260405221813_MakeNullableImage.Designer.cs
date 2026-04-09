@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProToolRent.Infrastructure.Persistence;
@@ -12,9 +13,11 @@ using ProToolRent.Infrastructure.Persistence;
 namespace ProToolRent.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260405221813_MakeNullableImage")]
+    partial class MakeNullableImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,11 +83,13 @@ namespace ProToolRent.Infrastructure.Migrations
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric");
 
-                    b.Property<DateOnly>("CreatedDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateOnly>("EndDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("EndDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValue(new DateTime(9999, 12, 31, 23, 59, 59, 999, DateTimeKind.Unspecified).AddTicks(9999));
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
@@ -129,11 +134,11 @@ namespace ProToolRent.Infrastructure.Migrations
 
                     b.ComplexProperty<Dictionary<string, object>>("Quantity", "ProToolRent.Domain.Entities.Tool.Quantity#Quantity", b1 =>
                         {
-                            b1.Property<int>("Available")
+                            b1.Property<int>("Reserved")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("integer")
                                 .HasDefaultValue(0)
-                                .HasColumnName("AvailableQuantity");
+                                .HasColumnName("ReservedQuantity");
 
                             b1.Property<int>("Total")
                                 .HasColumnType("integer")

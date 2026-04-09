@@ -5,8 +5,8 @@ namespace ProToolRent.Api.Contracts.Responses;
 public record OrderItemResponse
 (
     Guid Id,
-    DateTime CreatedDate,
-    DateTime EndDate,
+    DateOnly CreatedDate,
+    DateOnly EndDate,
     decimal Cost,
     int Quantity,
     Guid ToolId

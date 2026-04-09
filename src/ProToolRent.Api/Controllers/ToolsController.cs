@@ -10,6 +10,7 @@ using ProToolRent.Application.Queries.GetToolsByUserId;
 using ProToolRent.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace ProToolRent.Api.Controllers;
 
@@ -151,5 +152,24 @@ public class ToolsController : ControllerBase
             ErrorType.None => Ok(response),
             _ => BadRequest(new { error = result.Error })
         };
+    }
+
+    [HttpPost("{id:guid}/image")]
+    public async Task<IActionResult> UploadImage(Guid id, IFormFile file, CancellationToken ct)
+    {
+        var folder = Path.Combine("wwwroot", "images", "tools");
+        Directory.CreateDirectory(folder);
+
+        var fileName = $"{id}{Path.GetExtension(file.FileName)}";
+        var filePath = Path.Combine(folder, fileName);
+
+        using var stream = new FileStream(filePath, FileMode.Create);
+        await file.CopyToAsync(stream);
+
+        var imageUrl = $"http://localhost:5293/images/tools/{fileName}";
+
+        await _mediator.Send(new UploadToolImageCommand(id, imageUrl), ct);
+
+        return Ok(new { imageUrl });
     }
 }
