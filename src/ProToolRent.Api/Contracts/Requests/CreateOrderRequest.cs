@@ -2,5 +2,9 @@
 
 public record CreateOrderRequest
 (
-    Guid UserId
+    Guid UserId,
+    Guid ToolId,
+    DateOnly StartDate,
+    DateOnly EndDate,
+    int Quantity
 );

@@ -1,4 +1,5 @@
-﻿using ProToolRent.Domain.ValueObjects;
+﻿using System.Reflection.Metadata;
+using ProToolRent.Domain.ValueObjects;
 
 namespace ProToolRent.Domain.Entities;
 
@@ -11,7 +12,7 @@ public class Tool
     public decimal Price { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid UserId { get; private set; }
-    public string ImageUrl {get; private set; }
+    public string? ImageUrl {get; private set; }
 
     private Tool() { }
 
@@ -32,8 +33,32 @@ public class Tool
         UserId = userId;
     }
 
+    public Tool(Specification specification,
+        Quantity quantity,
+        string description, 
+        decimal price, 
+        Guid categoryId, 
+        Guid userId,
+        string imageUrl)
+    {
+        if (price < 0) 
+            throw new ArgumentException("Price must be above 0", nameof(price));
+        Specification = specification;
+        Description = description;
+        Quantity = quantity;
+        Price = price;
+        CategoryId = categoryId;
+        UserId = userId;
+        ImageUrl = imageUrl;
+    }
+
     public void UploadImage(string imageUrl)
     {
         ImageUrl = imageUrl;
+    }
+
+    public void ReserveQuantity(int reserved)
+    {
+        Quantity = Quantity.Reserve(reserved);
     }
 }

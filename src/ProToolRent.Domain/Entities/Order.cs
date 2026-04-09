@@ -28,9 +28,9 @@ public class Order
         return true;
     }
 
-    public Guid AddItem(decimal cost, int quantity, Tool tool)
+    public Guid AddItem(DateOnly createdDate, DateOnly endDate, int quantity, Tool tool)
     {
-        var item = new OrderItem(cost, quantity, tool);
+        var item = new OrderItem(createdDate, endDate, quantity, tool);
 
         OrderItems.Add(item);
 

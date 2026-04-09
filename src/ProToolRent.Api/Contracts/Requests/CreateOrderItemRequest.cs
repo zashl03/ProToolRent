@@ -2,8 +2,9 @@
 
 public record CreateOrderItemRequest
 (
-    decimal Cost,
-    int Quantity,
     Guid OrderId,
-    Guid ToolId
+    Guid ToolId,
+    DateOnly StartDate,
+    DateOnly EndDate,
+    int Quantity
 );

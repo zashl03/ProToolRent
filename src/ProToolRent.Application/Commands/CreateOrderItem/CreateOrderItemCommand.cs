@@ -5,8 +5,9 @@ namespace ProToolRent.Application.Commands.CreateOrderItem;
 
 public record CreateOrderItemCommand
 (
-    decimal Cost,
-    int Quantity,
     Guid OrderId,
-    Guid ToolId
+    Guid ToolId,
+    DateOnly StartDate,
+    DateOnly EndDate,
+    int Quantity
 ) : IRequest<Result<Guid>>;

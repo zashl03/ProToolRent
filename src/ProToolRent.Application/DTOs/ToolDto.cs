@@ -9,12 +9,11 @@ public record ToolDto
     string Name,
     double Power,
     string Description,
-    int TotalQuantity,
-    int ReservedQuantity,
+    int AvailableQuantity,
     decimal Price,
     Guid CategoryId,
     Guid UserId,
-    string ImageUrl
+    string? ImageUrl
 )
 {
     public static ToolDto FromEntity(Tool tool)
@@ -25,8 +24,7 @@ public record ToolDto
             tool.Specification.Name,
             tool.Specification.Power,
             tool.Description,
-            tool.Quantity.Total,
-            tool.Quantity.Reserved,
+            tool.Quantity.Available,
             tool.Price,
             tool.CategoryId,
             tool.UserId,

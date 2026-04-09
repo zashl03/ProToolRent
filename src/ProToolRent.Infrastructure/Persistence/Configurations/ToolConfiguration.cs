@@ -37,8 +37,8 @@ public class ToolConfiguration : IEntityTypeConfiguration<Tool>
             quan.Property(q => q.Total)
                 .HasColumnName("TotalQuantity")
                 .IsRequired();
-            quan.Property(q => q.Reserved)
-                .HasColumnName("ReservedQuantity")
+            quan.Property(q => q.Available)
+                .HasColumnName("AvailableQuantity")
                 .HasDefaultValue(0)
                 .IsRequired();
         });

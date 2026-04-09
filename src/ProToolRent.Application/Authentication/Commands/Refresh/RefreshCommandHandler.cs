@@ -37,6 +37,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Toke
 
         await _unitOfWork.SaveChangeAsync(ct);
 
-        return Result<TokenResponse>.Success(new TokenResponse(accessToken, refreshToken));
+        return Result<TokenResponse>.Success(new TokenResponse(accessToken, refreshToken, user.Role.ToString()));
     }
 }

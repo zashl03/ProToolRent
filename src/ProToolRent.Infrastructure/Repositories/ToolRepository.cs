@@ -19,15 +19,19 @@ public class ToolRepository : IToolRepository
         return await _context.Tools.FirstOrDefaultAsync(t => t.Id == id, ct);
     }
 
-    public async Task<List<Tool>?> GetToolsByUserAsync(Guid id, CancellationToken ct)
+    public async Task<List<Tool>> GetToolsByUserAsync(Guid id, CancellationToken ct)
     {
         return await _context.Tools.Where(t => t.UserId == id).ToListAsync(ct);
     }
 
     public async Task<PagedResult<Tool>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken ct)
     {
-        var totalCount = await _context.Tools.CountAsync(ct);
-        var items = await _context.Tools
+        var query = _context.Tools
+            .Where(t => t.Quantity.Available > 0);
+
+        var totalCount = await query.CountAsync(ct);
+
+        var items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);
