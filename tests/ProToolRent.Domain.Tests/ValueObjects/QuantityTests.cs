@@ -11,7 +11,7 @@ public class QuantityTests
     }
 
     [Fact]
-    public void Constructor_WhenDataIsValid_SetsTotalп()
+    public void Constructor_WhenDataIsValid_SetsTotal()
     {
         var quantity = new Quantity(10);
 
