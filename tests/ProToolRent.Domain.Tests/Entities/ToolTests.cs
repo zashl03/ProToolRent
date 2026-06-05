@@ -6,7 +6,7 @@ namespace ProToolRent.Domain.tests;
 public class ToolTests
 {
     [Fact]
-    public void Constructor_WhenPriceIsInvalid_ThrowsException()
+    public void Constructor_WhenPriceIsNegative_ThrowsException()
     {
         var specification = new Specification("Brand", "Name", 100);
         var quantity = new Quantity(10);
