@@ -12,12 +12,12 @@ public class ToolTests
         var quantity = new Quantity(10);
 
         var ex = Assert.Throws<ArgumentException>(() => new Tool(
-            specification,
-            quantity,
-            "description",
-            -5,
-            Guid.NewGuid(),
-            Guid.NewGuid()
+            specification: specification,
+            quantity: quantity,
+            description: "description",
+            price: -5,
+            userId: Guid.NewGuid(),
+            categoryId: Guid.NewGuid()
             ));
         
         Assert.Equal("price", ex.ParamName);
@@ -33,12 +33,12 @@ public class ToolTests
 
 
         var tool = new Tool(
-            specification,
-            quantity,
-            "description",
-            100,
-            categoryId,
-            userId
+            specification: specification,
+            quantity: quantity,
+            description: "description",
+            price: 100,
+            categoryId: categoryId,
+            userId: userId
             );
         
         Assert.Equal("description", tool.Description);

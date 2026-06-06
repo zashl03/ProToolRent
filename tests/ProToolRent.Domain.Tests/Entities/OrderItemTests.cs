@@ -8,24 +8,25 @@ public class OrderItemTests
     private readonly Tool _tool;
     public OrderItemTests()
     {
-        var specification = new Specification("Brand", "Name", 100);
+        var specification = new Specification(brand: "Brand", name: "Name", power: 100);
         var quantity = new Quantity(5);
         _tool = new Tool(
-            specification, 
-            quantity,
-            "description",
-            100,
-            Guid.NewGuid(),
-            Guid.NewGuid()
+            specification: specification, 
+            quantity: quantity,
+            description: "description",
+            price: 100,
+            userId: Guid.NewGuid(),
+            categoryId: Guid.NewGuid()
         );
     }
 
     [Theory]
     [InlineData(0)]
     [InlineData(-10)]
-    public void Constructor_WhenCostIsNotPositive_ThrowsException(int cost)
+    public void Constructor_WhenCostIsNotPositive_ThrowsException(int invalidCost)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new OrderItem(cost, 1, _tool));
+        var ex = Assert.Throws<ArgumentException>(() => 
+            new OrderItem(cost: invalidCost, quantity: 1, tool: _tool));
 
         Assert.Equal("cost", ex.ParamName);
     }
@@ -33,9 +34,10 @@ public class OrderItemTests
     [Theory]
     [InlineData(0)]
     [InlineData(-10)]
-    public void Constructor_WhenQuantityIsNotPositive_ThrowsException(int quantity)
+    public void Constructor_WhenQuantityIsNotPositive_ThrowsException(int invalidQuantity)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new OrderItem(100, quantity, _tool));
+        var ex = Assert.Throws<ArgumentException>(() => 
+            new OrderItem(cost: 100, quantity: invalidQuantity, tool: _tool));
 
         Assert.Equal("quantity", ex.ParamName);
     }
@@ -43,7 +45,7 @@ public class OrderItemTests
     [Fact]
     public void Constructor_WhenDataIsValid_CreatesOrderItemObject()
     {
-        var orderItem = new OrderItem(500, 1, _tool);
+        var orderItem = new OrderItem(cost: 500, quantity: 1, tool: _tool);
 
         Assert.Equal(500, orderItem.Cost);
         Assert.Equal(1, orderItem.Quantity);

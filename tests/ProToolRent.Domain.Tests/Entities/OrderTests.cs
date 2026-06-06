@@ -7,15 +7,15 @@ public class OrderTests
 {
     private Tool CreateTestTool(int seed = 0)
     {
-        var specification = new Specification($"Brand{seed}", "Name{seed}", 500);
+        var specification = new Specification($"Brand{seed}", $"Name{seed}", 500);
         var quantity = new Quantity(5);
         return new Tool(
-            specification, 
-            quantity, 
-            "description", 
-            1000, 
-            Guid.NewGuid(), 
-            Guid.NewGuid());
+            specification: specification, 
+            quantity: quantity, 
+            description: "description", 
+            price: 1000, 
+            userId: Guid.NewGuid(), 
+            categoryId: Guid.NewGuid());
     }
 
     [Fact]
@@ -35,7 +35,7 @@ public class OrderTests
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
 
-        order.AddItem(100, 1, tool);
+        order.AddItem(cost: 100, quantity: 1, tool: tool);
 
         var addedItem = Assert.Single(order.OrderItems);
 
@@ -49,7 +49,7 @@ public class OrderTests
     {
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
-        var itemId = order.AddItem(100, 1, tool);
+        var itemId = order.AddItem(cost: 100, quantity: 1, tool: tool);
 
         var removed = order.RemoveItem(itemId);
 
@@ -72,7 +72,7 @@ public class OrderTests
     {
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
-        order.AddItem(100, 1, tool);
+        order.AddItem(cost: 100, quantity: 1, tool: tool);
         var wrongId = Guid.NewGuid();
         
         var removed = order.RemoveItem(wrongId);

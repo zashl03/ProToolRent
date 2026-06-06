@@ -8,9 +8,9 @@ public class CategoryTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
-    public void Constructor_WhenNameIsInvalid_ThrowsException(string? name)
+    public void Constructor_WhenNameIsInvalid_ThrowsException(string? invalidName)
     {
-        var ex = Assert.Throws<ArgumentException>(() => new Category(name!));
+        var ex = Assert.Throws<ArgumentException>(() => new Category(invalidName!));
 
         Assert.Equal("name", ex.ParamName);
     }
