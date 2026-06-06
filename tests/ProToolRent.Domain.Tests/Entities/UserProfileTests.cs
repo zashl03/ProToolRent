@@ -9,7 +9,7 @@ public class UserProfileTests
     public UserProfile CreateTestProfile()
     {
         return new UserProfile(
-            firstName: "old",
+            firstName: "name",
             lastName: "last", 
             city: "city", 
             organization: "org", 
@@ -208,7 +208,7 @@ public class UserProfileTests
                 phone: "123"
             ));
     
-        Assert.Equal("organizzation", ex.ParamName);
+        Assert.Equal("organization", ex.ParamName);
     }
 
     [Theory]
@@ -228,7 +228,7 @@ public class UserProfileTests
                 phone: invalidPhone!
             ));
     
-        Assert.Equal("organizzation", ex.ParamName);
+        Assert.Equal("phone", ex.ParamName);
     }
 
     [Fact]

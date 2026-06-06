@@ -11,7 +11,7 @@ public readonly record struct Quantity
 
     public Quantity(int total)
     {
-        if (total < 0)
+        if (total <= 0)
             throw new ArgumentException("Total tools cant be less than 0", nameof(total));
 
         Total = total;
@@ -19,9 +19,10 @@ public readonly record struct Quantity
     }
     public Quantity(int total, int reserved)
     {
-        if (total < 0)
+        if (total <= 0)
             throw new ArgumentException("Total tools cant be less than 0", nameof(total));
-
+        if (reserved > total)
+            throw new ArgumentException("Total tools cant be less than reserved", nameof(reserved));
         Total = total;
         Available = total - reserved;
     }

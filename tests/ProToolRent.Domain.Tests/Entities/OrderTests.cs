@@ -35,11 +35,15 @@ public class OrderTests
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
 
-        order.AddItem(cost: 100, quantity: 1, tool: tool);
+        order.AddItem(
+            createdDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), 
+            endDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+            quantity: 1, 
+            tool: tool);
 
         var addedItem = Assert.Single(order.OrderItems);
 
-        Assert.Equal(100, addedItem.Cost);
+        Assert.Equal(6000, addedItem.Cost);
         Assert.Equal(1, addedItem.Quantity);
         Assert.Equal(tool, addedItem.Tool);
     }
@@ -49,7 +53,11 @@ public class OrderTests
     {
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
-        var itemId = order.AddItem(cost: 100, quantity: 1, tool: tool);
+        var itemId = order.AddItem(
+            createdDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), 
+            endDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+            quantity: 1, 
+            tool: tool);
 
         var removed = order.RemoveItem(itemId);
 
@@ -72,7 +80,11 @@ public class OrderTests
     {
         var order = new Order(Guid.NewGuid());
         var tool = CreateTestTool();
-        order.AddItem(cost: 100, quantity: 1, tool: tool);
+        order.AddItem(
+            createdDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), 
+            endDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+            quantity: 1, 
+            tool: tool);
         var wrongId = Guid.NewGuid();
         
         var removed = order.RemoveItem(wrongId);

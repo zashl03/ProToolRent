@@ -14,7 +14,7 @@ public class OrderItemTests
             specification: specification, 
             quantity: quantity,
             description: "description",
-            price: 100,
+            price: 1000,
             userId: Guid.NewGuid(),
             categoryId: Guid.NewGuid()
         );
@@ -23,21 +23,14 @@ public class OrderItemTests
     [Theory]
     [InlineData(0)]
     [InlineData(-10)]
-    public void Constructor_WhenCostIsNotPositive_ThrowsException(int invalidCost)
-    {
-        var ex = Assert.Throws<ArgumentException>(() => 
-            new OrderItem(cost: invalidCost, quantity: 1, tool: _tool));
-
-        Assert.Equal("cost", ex.ParamName);
-    }
-
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-10)]
     public void Constructor_WhenQuantityIsNotPositive_ThrowsException(int invalidQuantity)
     {
         var ex = Assert.Throws<ArgumentException>(() => 
-            new OrderItem(cost: 100, quantity: invalidQuantity, tool: _tool));
+            new OrderItem(
+                createdDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), 
+                endDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+                quantity: invalidQuantity, 
+                tool: _tool));
 
         Assert.Equal("quantity", ex.ParamName);
     }
@@ -45,11 +38,17 @@ public class OrderItemTests
     [Fact]
     public void Constructor_WhenDataIsValid_CreatesOrderItemObject()
     {
-        var orderItem = new OrderItem(cost: 500, quantity: 1, tool: _tool);
+        var orderItem = new OrderItem(
+                createdDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), 
+                endDate: DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)),
+                quantity: 1, 
+                tool: _tool
+                );
 
-        Assert.Equal(500, orderItem.Cost);
+        Assert.Equal(6000, orderItem.Cost);
         Assert.Equal(1, orderItem.Quantity);
+        Assert.Equal(DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)), orderItem.CreatedDate);
+        Assert.Equal(DateOnly.FromDateTime(DateTime.UtcNow.AddDays(7)), orderItem.EndDate);
         Assert.Equal(_tool, orderItem.Tool);
-        Assert.True((DateTime.Now - orderItem.CreatedDate).TotalSeconds < 1);
     }
 }
