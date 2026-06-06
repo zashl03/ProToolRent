@@ -13,7 +13,7 @@ public readonly record struct Specification
             throw new ArgumentException("Brand of tool is required", nameof(brand));
         if(string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Name of tool is required", nameof(name));
-        if(power < 0) 
+        if(power <= 0) 
             throw new ArgumentException("Power must be above 0", nameof(power));
 
         Brand = brand;

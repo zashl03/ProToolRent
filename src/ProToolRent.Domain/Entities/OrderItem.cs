@@ -18,10 +18,10 @@ public class OrderItem
 
     public OrderItem(decimal cost, int quantity, Tool tool)
     {
-        if (cost < 0)
+        if (cost <= 0)
             throw new ArgumentException("Cost of orderitem must be more than 0", nameof(cost));
 
-        if (quantity < 0)
+        if (quantity <= 0)
             throw new ArgumentException("Quantity of orderitem must be more than 0", nameof(quantity));
 
         CreatedDate = DateTime.Now;

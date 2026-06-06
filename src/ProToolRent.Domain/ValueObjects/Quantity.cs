@@ -1,6 +1,4 @@
-﻿
-
-namespace ProToolRent.Domain.ValueObjects;
+﻿namespace ProToolRent.Domain.ValueObjects;
 
 public readonly record struct Quantity
 {
