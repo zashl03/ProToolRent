@@ -10,10 +10,6 @@ namespace ProToolRent.Application.Tests;
 
 public class CreateOrderCommandHandlerTests
 {
-    // 1 случай когда tool == null
-    // 2 случай когда quantity > available
-    // 3 случай когда успешно все
-    // 4 и 5 случай когда успешно, но нет арендодателя или арендатора
     private record Mocks(
         Mock<IOrderRepository> OrderRepo,
         Mock<IToolRepository> ToolRepo,
