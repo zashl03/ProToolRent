@@ -12,6 +12,7 @@ public class Order
 
     public Order(Guid userId)
     {
+        Id = Guid.NewGuid();
         Status = "Создан";
         CreatedDate = DateTime.UtcNow;
         UserId = userId; 

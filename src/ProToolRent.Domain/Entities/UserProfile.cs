@@ -25,6 +25,7 @@ public class UserProfile
         if (string.IsNullOrWhiteSpace(phone))
             throw new ArgumentException("Phone of user is required", nameof(phone));
 
+        Id = Guid.NewGuid();
         FirstName = firstName;
         LastName = lastName;
         City = city;
@@ -54,7 +55,10 @@ public class UserProfile
 
     public static UserProfile CreateEmpty()
     {
-        return new UserProfile();
+        return new UserProfile
+        {
+            Id = Guid.NewGuid()
+        };
     }
 
     public void SetUser(User user)

@@ -25,6 +25,8 @@ public class Tool
     {
         if (price < 0) 
             throw new ArgumentException("Price must be above 0", nameof(price));
+
+        Id = Guid.NewGuid();
         Specification = specification;
         Description = description;
         Quantity = quantity;
@@ -43,6 +45,8 @@ public class Tool
     {
         if (price < 0) 
             throw new ArgumentException("Price must be above 0", nameof(price));
+        
+        Id = Guid.NewGuid();
         Specification = specification;
         Description = description;
         Quantity = quantity;

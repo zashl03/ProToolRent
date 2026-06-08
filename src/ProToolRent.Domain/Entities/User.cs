@@ -22,6 +22,7 @@ public class User
         if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("PasswordHash of user is required", nameof(passwordHash));
 
+        Id = Guid.NewGuid();
         Email = email;
         PasswordHash = passwordHash;
         Role = role;
