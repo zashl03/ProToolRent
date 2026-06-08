@@ -46,7 +46,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<AuthResp
 
         user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         var authResponse = new AuthResponse(
             user.Id,

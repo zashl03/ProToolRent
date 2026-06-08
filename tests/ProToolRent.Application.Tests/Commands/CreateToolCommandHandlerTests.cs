@@ -34,7 +34,7 @@ public class CreateToolCommandHandlerTests
             repo => repo.AddAsync(It.IsAny<Tool>(), It.IsAny<CancellationToken>()),
             Times.Once);
         mockUnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 }

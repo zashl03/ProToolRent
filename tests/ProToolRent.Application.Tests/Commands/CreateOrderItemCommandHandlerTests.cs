@@ -53,7 +53,7 @@ public class CreateOrderItemCommandHandlerTests
             repo => repo.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()),
             Times.Never);
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -88,7 +88,7 @@ public class CreateOrderItemCommandHandlerTests
             repo => repo.GetByIdAsync(toolId, It.IsAny<CancellationToken>()),
             Times.Once);
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -131,7 +131,7 @@ public class CreateOrderItemCommandHandlerTests
             repo => repo.GetByIdAsync(tool.Id, It.IsAny<CancellationToken>()),
             Times.Once);
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 }

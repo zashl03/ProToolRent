@@ -38,8 +38,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Resul
 
         await _userRepository.AddAsync(user, ct);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
-        return Result<Guid>.Success(userProfile.Id);
+        return Result<Guid>.Success(user.Id);
     }
 }

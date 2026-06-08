@@ -38,7 +38,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
         await _categoryRepository.AddAsync(category, ct);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result<Guid>.Success(category.Id);
     }

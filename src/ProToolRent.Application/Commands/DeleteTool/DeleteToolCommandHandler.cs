@@ -25,7 +25,7 @@ public class DeleteToolCommandHandler : IRequestHandler<DeleteToolCommand, Resul
         
         await _repository.DeleteAsync(request.Id, ct);
         
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

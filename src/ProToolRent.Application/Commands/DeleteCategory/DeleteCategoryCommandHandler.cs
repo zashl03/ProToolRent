@@ -26,7 +26,7 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
 
         await _categoryRepository.DeleteAsync(request.Id, ct);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

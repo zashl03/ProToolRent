@@ -43,7 +43,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
         order.AddItem(request.StartDate, request.EndDate, request.Quantity, tool);
         
         await _orderRepository.AddAsync(order, ct);
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         var item = order.OrderItems.First();
         var orderSummaryDto = new OrderSummaryDto(

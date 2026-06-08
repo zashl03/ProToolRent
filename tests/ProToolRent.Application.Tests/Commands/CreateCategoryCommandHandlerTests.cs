@@ -30,7 +30,7 @@ public class CreateCategoryCommandHandlerTests
             Times.Once);
         
         mockUnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
@@ -63,7 +63,7 @@ public class CreateCategoryCommandHandlerTests
             Times.Once);
         
         mockUnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
@@ -95,7 +95,7 @@ public class CreateCategoryCommandHandlerTests
             repo => repo.AddAsync(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
             Times.Never);
         mockUnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 }

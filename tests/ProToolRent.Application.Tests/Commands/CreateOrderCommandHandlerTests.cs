@@ -81,7 +81,7 @@ public class CreateOrderCommandHandlerTests
             Times.Never);
         
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
         
         mocks.UserRepo.Verify(
@@ -124,7 +124,7 @@ public class CreateOrderCommandHandlerTests
             Times.Never);
         
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -170,7 +170,7 @@ public class CreateOrderCommandHandlerTests
             Times.Never);
         
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -218,7 +218,7 @@ public class CreateOrderCommandHandlerTests
             Times.Never);
         
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -270,7 +270,7 @@ public class CreateOrderCommandHandlerTests
             Times.Once);
         
         mocks.UnitOfWork.Verify(
-            uow => uow.SaveChangeAsync(It.IsAny<CancellationToken>()),
+            uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 }

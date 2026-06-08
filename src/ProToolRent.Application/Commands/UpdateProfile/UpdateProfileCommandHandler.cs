@@ -26,7 +26,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
             request.Organization, 
             request.Phone);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

@@ -30,7 +30,7 @@ public class DeleteOrderItemCommandHandler : IRequestHandler<DeleteOrderItemComm
             return Result.NotFound($"Order item with {request.OrderItemId} not found");
         }
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }
