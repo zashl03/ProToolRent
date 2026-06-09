@@ -42,7 +42,7 @@ public class DeleteCategoryCommandHandlerTests
     }
 
     [Fact]
-    public async Task Handle_WhenDataIsValid_DeletesCategoryObjectAndReturnsSuccess()
+    public async Task Handle_WhenDataIsValid_RemovesCategoryObjectAndReturnsSuccess()
     {
         var mockCategoryRepo = new Mock<ICategoryRepository>();
         var mockUnitOfWork = new Mock<IUnitOfWork>();
