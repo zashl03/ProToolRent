@@ -19,7 +19,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         if (user == null)
             return Result.NotFound("User not found");
 
-        user.UpdateUser(
+        user.UpdateProfile(
             request.FirstName, 
             request.LastName, 
             request.City, 

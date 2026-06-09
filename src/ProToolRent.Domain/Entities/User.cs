@@ -28,7 +28,7 @@ public class User
         Role = role;
     }
 
-    public void UpdateUser(string firstName, string lastName, string city, string organization, string phone)
+    public void UpdateProfile(string firstName, string lastName, string city, string organization, string phone)
     {
         Profile.UpdateProfile(firstName, lastName, city, organization, phone);
     }
