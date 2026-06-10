@@ -7,9 +7,10 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     public CreateUserCommandValidator()
     {
         RuleFor(u => u.Email)
-            .EmailAddress(FluentValidation.Validators.EmailValidationMode.AspNetCoreCompatible).WithMessage("Incorrect Email form")
             .NotEmpty().WithMessage("Email of user is required")
-            .MaximumLength(200).WithMessage("Email of user cannot exceed 200 chars");
+            .MaximumLength(200).WithMessage("Email of user cannot exceed 200 chars")
+            .EmailAddress(FluentValidation.Validators.EmailValidationMode.AspNetCoreCompatible)
+            .WithMessage("Incorrect Email form");
 
         RuleFor(u => u.FirstName)
             .NotEmpty().WithMessage("FirstName of user is required")
@@ -32,6 +33,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .MaximumLength(50).WithMessage("Phone cannot exceed 50 chars");
 
         RuleFor(u => u.Role)
-            .NotNull().WithMessage("RoleId is required");
+            .NotNull().WithMessage("Role is required");
     }
 }

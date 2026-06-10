@@ -1,5 +1,3 @@
-
-
 using MediatR;
 using ProToolRent.Application.Common;
 using ProToolRent.Application.DTOs;
