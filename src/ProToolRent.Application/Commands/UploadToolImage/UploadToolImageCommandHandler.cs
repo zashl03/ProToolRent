@@ -20,7 +20,7 @@ public class UploadToolImageCommandHandler : IRequestHandler<UploadToolImageComm
             return Result.NotFound("Tool not found");
 
         tool.UploadImage(request.ImageUrl);
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

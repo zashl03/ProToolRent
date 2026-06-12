@@ -22,12 +22,13 @@ public class User
         if (string.IsNullOrWhiteSpace(passwordHash))
             throw new ArgumentException("PasswordHash of user is required", nameof(passwordHash));
 
+        Id = Guid.NewGuid();
         Email = email;
         PasswordHash = passwordHash;
         Role = role;
     }
 
-    public void UpdateUser(string firstName, string lastName, string city, string organization, string phone)
+    public void UpdateProfile(string firstName, string lastName, string city, string organization, string phone)
     {
         Profile.UpdateProfile(firstName, lastName, city, organization, phone);
     }

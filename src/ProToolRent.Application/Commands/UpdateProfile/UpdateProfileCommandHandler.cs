@@ -19,14 +19,14 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
         if (user == null)
             return Result.NotFound("User not found");
 
-        user.UpdateUser(
+        user.UpdateProfile(
             request.FirstName, 
             request.LastName, 
             request.City, 
             request.Organization, 
             request.Phone);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

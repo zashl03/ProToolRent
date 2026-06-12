@@ -59,7 +59,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
         await _userRepository.AddAsync(user, ct);
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         var accessToken = _jwtProvider.GenerateAccessToken(user);
 

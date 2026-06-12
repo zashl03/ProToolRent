@@ -17,15 +17,15 @@ public class DeleteToolCommandHandler : IRequestHandler<DeleteToolCommand, Resul
 
     public async Task<Result> Handle(DeleteToolCommand request, CancellationToken ct)
     {
-        var exists = await _repository.GetByIdAsync(request.Id, ct);
-        if (exists == null)
+        var tool = await _repository.GetByIdAsync(request.Id, ct);
+        if (tool == null)
         {
             return Result.NotFound($"Tool with ID {request.Id} not found");
         }
         
         await _repository.DeleteAsync(request.Id, ct);
         
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

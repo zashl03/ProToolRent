@@ -34,7 +34,7 @@ public class CreateToolCommandHandler : IRequestHandler<CreateToolCommand, Resul
 
         await _repository.AddAsync(tool, ct);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result<Guid>.Success(tool.Id);
     }

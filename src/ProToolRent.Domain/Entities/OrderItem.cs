@@ -26,10 +26,12 @@ public class OrderItem
         if(quantity > tool.Quantity.Available)
             throw new ArgumentException("This tool is booked", nameof(quantity));
 
+        Id = Guid.NewGuid();
         CreatedDate = createdDate;
         EndDate = endDate;
         Cost = (EndDate.DayNumber - CreatedDate.DayNumber) * tool.Price;
         Quantity = quantity;
+        ToolId = tool.Id;
         Tool = tool;
         Tool.ReserveQuantity(quantity);
     }

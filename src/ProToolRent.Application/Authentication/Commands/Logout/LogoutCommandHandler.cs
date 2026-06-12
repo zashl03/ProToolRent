@@ -26,7 +26,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result>
         }
 
         user.ResetRefreshToken();
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result.Success();
     }

@@ -35,7 +35,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Toke
 
         user.SetRefreshToken(refreshToken, DateTime.UtcNow.AddDays(7));
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result<TokenResponse>.Success(new TokenResponse(accessToken, refreshToken, user.Role.ToString()));
     }

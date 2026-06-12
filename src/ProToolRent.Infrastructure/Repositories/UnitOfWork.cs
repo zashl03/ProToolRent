@@ -12,7 +12,7 @@ public class UnitOfWork : IUnitOfWork
         _context = appDbContext; 
     }
 
-    public async Task<int> SaveChangeAsync(CancellationToken ct)
+    public async Task<int> SaveChangesAsync(CancellationToken ct)
     {
         return await _context.SaveChangesAsync(ct);
     }

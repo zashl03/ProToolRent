@@ -23,29 +23,29 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
 
     public async Task<Result<OrderSummaryDto>> Handle(CreateOrderCommand request, CancellationToken ct)
     {
-        var order = new Order(request.UserId);
+        
         var tool = await _toolRepository.GetByIdAsync(request.ToolId, ct);
-
         if(tool == null)
             return Result<OrderSummaryDto>.NotFound($"Tool with {request.ToolId} not found");
+
         if(request.Quantity > tool.Quantity.Available)
             return Result<OrderSummaryDto>.Conflict("Available quantity less than requested");
 
-        order.AddItem(request.StartDate, request.EndDate, request.Quantity, tool);
-
-        await _orderRepository.AddAsync(order, ct);
-
-        await _unitOfWork.SaveChangeAsync(ct);
-
-        var item = order.OrderItems.First();
-        var tenant = await _userRepository.GetByIdAsync(order.UserId, ct);
-        var landlord = await _userRepository.GetByIdAsync(tool.UserId, ct);
-
+        var tenant = await _userRepository.GetByIdAsync(request.UserId, ct);
         if(tenant == null)
             return Result<OrderSummaryDto>.Conflict("Tenant not found");
+
+        var landlord = await _userRepository.GetByIdAsync(tool.UserId, ct);
         if(landlord == null)
             return Result<OrderSummaryDto>.Conflict("Landlord not found");
 
+        var order = new Order(request.UserId);
+        order.AddItem(request.StartDate, request.EndDate, request.Quantity, tool);
+        
+        await _orderRepository.AddAsync(order, ct);
+        await _unitOfWork.SaveChangesAsync(ct);
+
+        var item = order.OrderItems.First();
         var orderSummaryDto = new OrderSummaryDto(
             order.Id,
             tool.Id,

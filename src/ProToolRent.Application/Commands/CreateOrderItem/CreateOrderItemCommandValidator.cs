@@ -8,7 +8,6 @@ public class CreateOrderItemCommandValidator : AbstractValidator<CreateOrderItem
     public CreateOrderItemCommandValidator()
     {
         RuleFor(x => x.Quantity)
-            .NotEmpty().WithMessage("Quantity is required")
             .GreaterThan(0).WithMessage("Quantity must be more than 0");
     }
 }

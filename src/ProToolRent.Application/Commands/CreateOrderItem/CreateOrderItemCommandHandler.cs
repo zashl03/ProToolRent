@@ -34,7 +34,7 @@ public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemComm
 
         var orderItemId = order.AddItem(request.StartDate, request.EndDate, request.Quantity, tool);
 
-        await _unitOfWork.SaveChangeAsync(ct);
+        await _unitOfWork.SaveChangesAsync(ct);
 
         return Result<Guid>.Success(orderItemId);
     }

@@ -14,6 +14,8 @@ namespace ProToolRent.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Name of category is required", nameof(name));
+            
+            Id = Guid.NewGuid();
             Name = name;
             ParentId = parentId;
             Parent = parent;
