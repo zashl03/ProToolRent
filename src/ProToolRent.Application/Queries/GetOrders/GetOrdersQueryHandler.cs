@@ -22,7 +22,7 @@ public class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, Result<List
 
     public async Task<Result<List<OrderSummaryDto>>> Handle(GetOrdersQuery request, CancellationToken ct)
     {
-        var user = await _userRepository.GetByIdAsync(request.UserId);
+        var user = await _userRepository.GetByIdAsync(request.UserId, ct);
         if(user == null)
             return Result<List<OrderSummaryDto>>.NotFound("User not found");
         
@@ -46,7 +46,7 @@ public class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, Result<List
         foreach(var order in orders)
         {
             var orderItem = order.OrderItems.FirstOrDefault();
-            if (orderItem is null)
+            if (orderItem == null)
                 return Result<List<OrderSummaryDto>>.Failure("Order item not found");
                 
             var tool = orderItem.Tool;

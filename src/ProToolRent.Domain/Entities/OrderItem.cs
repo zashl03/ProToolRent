@@ -31,6 +31,7 @@ public class OrderItem
         EndDate = endDate;
         Cost = (EndDate.DayNumber - CreatedDate.DayNumber) * tool.Price;
         Quantity = quantity;
+        ToolId = tool.Id;
         Tool = tool;
         Tool.ReserveQuantity(quantity);
     }
