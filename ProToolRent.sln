@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProToolRent.Domain.Tests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProToolRent.Application.Tests", "tests\ProToolRent.Application.Tests\ProToolRent.Application.Tests.csproj", "{B424994F-3B43-4316-BD7E-4C8DD575ED7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProToolRent.Api.Tests", "tests\ProToolRent.Api.Tests\ProToolRent.Api.Tests.csproj", "{67C4612B-FD55-4D96-A6C7-118DF06F8841}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,10 +49,6 @@ Global
 		{B424994F-3B43-4316-BD7E-4C8DD575ED7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B424994F-3B43-4316-BD7E-4C8DD575ED7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B424994F-3B43-4316-BD7E-4C8DD575ED7D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67C4612B-FD55-4D96-A6C7-118DF06F8841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67C4612B-FD55-4D96-A6C7-118DF06F8841}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67C4612B-FD55-4D96-A6C7-118DF06F8841}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67C4612B-FD55-4D96-A6C7-118DF06F8841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,7 +60,6 @@ Global
 		{F1E7B41E-8F2E-4AF3-8FAE-64AAF568DBFB} = {B3EC7F69-4FDD-4E06-9459-B5F8FD946C02}
 		{2F5B7AFB-BED2-4A65-A3C8-69E1413E5D1A} = {EB709E24-2F6D-4717-86FF-4D3D73458B94}
 		{B424994F-3B43-4316-BD7E-4C8DD575ED7D} = {EB709E24-2F6D-4717-86FF-4D3D73458B94}
-		{67C4612B-FD55-4D96-A6C7-118DF06F8841} = {EB709E24-2F6D-4717-86FF-4D3D73458B94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4089DC05-0D11-4729-9246-33F81FBCA1E3}

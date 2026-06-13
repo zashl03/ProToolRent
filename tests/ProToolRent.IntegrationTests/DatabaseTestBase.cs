@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProToolRent.Domain.Entities;
+using ProToolRent.Domain.Enums;
+using ProToolRent.Domain.ValueObjects;
 using ProToolRent.Infrastructure.Persistence;
 using Testcontainers.PostgreSql;
 
@@ -10,6 +13,7 @@ public class DatabaseTestBase : IAsyncLifetime
     
     protected AppDbContext DbContext { get; private set; } = null!;
 
+    protected CancellationToken Ct => TestContext.Current.CancellationToken;
     public async ValueTask InitializeAsync()
     {
         await _container.StartAsync();
@@ -21,6 +25,7 @@ public class DatabaseTestBase : IAsyncLifetime
         DbContext = new AppDbContext(options);
     
         await DbContext.Database.MigrateAsync();
+        await ClearDatabaseAsync();
     }
 
     public async ValueTask DisposeAsync()
@@ -38,6 +43,36 @@ public class DatabaseTestBase : IAsyncLifetime
         DbContext.Users.RemoveRange(DbContext.Users);
         DbContext.Categories.RemoveRange(DbContext.Categories);
        
-        await DbContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync(Ct);
+    }
+
+    protected async Task<Category> CreateCategoryAsync(string name = "TestCategory")
+    {
+        var category = new Category(name);
+        DbContext.Categories.Add(category);
+        await DbContext.SaveChangesAsync(Ct);
+        DbContext.ChangeTracker.Clear();
+        return category;
+    }
+
+    protected async Task<User> CreateUserAsync(string email = "user@test.com", UserRole role = UserRole.Tenant)
+    {
+        var user = new User(email, "passHash", role);
+        user.SetProfile(new UserProfile("name", "last", "city", "org", "1234"));
+        DbContext.Users.Add(user);
+        await DbContext.SaveChangesAsync(Ct);
+        DbContext.ChangeTracker.Clear();
+        return user;
+    }
+
+    protected async Task<Tool> CreateToolAsync(Category category, User owner)
+    {
+        var spec = new Specification("brand", "name", 100);
+        var quan = new Quantity(10);
+        var tool = new Tool(spec, quan, "desc", 100, category.Id, owner.Id, "123");
+        DbContext.Tools.Add(tool);
+        await DbContext.SaveChangesAsync(Ct);
+        DbContext.ChangeTracker.Clear();
+        return tool;
     }
 }
