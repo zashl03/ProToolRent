@@ -25,6 +25,7 @@ public class OrdersController : ControllerBase
         _mediator = mediator; 
     }
 
+    [Authorize]
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(OrderResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -99,6 +100,7 @@ public class OrdersController : ControllerBase
         };
     }
 
+    [Authorize]
     [HttpGet("{orderId:guid}/items/{orderItemId:guid}")]
     [ProducesResponseType(typeof(OrderItemResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

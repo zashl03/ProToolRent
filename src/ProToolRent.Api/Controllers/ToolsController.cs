@@ -154,6 +154,7 @@ public class ToolsController : ControllerBase
         };
     }
 
+    [Authorize(Roles = "Admin,Landlord")]
     [HttpPost("{id:guid}/image")]
     public async Task<IActionResult> UploadImage(Guid id, IFormFile file, CancellationToken ct)
     {

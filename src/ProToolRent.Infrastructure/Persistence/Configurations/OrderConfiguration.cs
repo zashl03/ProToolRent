@@ -12,6 +12,15 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasKey(o => o.Id);
 
+        builder.Property(o => o.UserId)
+            .IsRequired();
+        
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(o => o.UserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+        
         builder.Property(o => o.Status)
             .IsRequired()
             .HasMaxLength(50);
