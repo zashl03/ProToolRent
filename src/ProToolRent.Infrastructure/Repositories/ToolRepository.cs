@@ -27,7 +27,8 @@ public class ToolRepository : IToolRepository
     public async Task<PagedResult<Tool>> GetPagedAsync(int pageNumber, int pageSize, CancellationToken ct)
     {
         var query = _context.Tools
-            .Where(t => t.Quantity.Available > 0);
+            .Where(t => t.Quantity.Available > 0)
+            .OrderBy(t => t.Id);
 
         var totalCount = await query.CountAsync(ct);
 
@@ -44,6 +45,7 @@ public class ToolRepository : IToolRepository
         var totalCount = await _context.Tools.Where(t => t.UserId == id).CountAsync(ct);
         var items = await _context.Tools
             .Where(t => t.UserId == id)
+            .OrderBy(t => t.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(ct);

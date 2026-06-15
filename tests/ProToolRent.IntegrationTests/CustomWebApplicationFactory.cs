@@ -7,32 +7,42 @@ using Testcontainers.PostgreSql;
 
 namespace ProToolRent.IntegrationTests;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder("postgres:18-alpine").Build();
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder("postgres:18-alpine")
+        .Build();
 
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    public async ValueTask InitializeAsync()
     {
-        builder.ConfigureServices(services =>
-        {
-           var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-
-            if(descriptor != null)
-                services.Remove(descriptor);
-
-            _container.StartAsync().GetAwaiter().GetResult();
-
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(_container.GetConnectionString())); 
-        });
+        await _container.StartAsync();
     }
 
-    public HttpClient CreateApiClinet() => CreateClient();
-
-    public override async ValueTask DisposeAsync()
+    public new async ValueTask DisposeAsync()
     {
         await _container.DisposeAsync();
         await base.DisposeAsync();
     }
+
+    protected override void ConfigureWebHost(IWebHostBuilder builder)
+    {
+        builder.UseEnvironment("Testing");
+
+        builder.ConfigureServices(services =>
+        {
+            var descriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
+
+            if (descriptor != null)
+                services.Remove(descriptor);
+
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(_container.GetConnectionString()));
+
+            using var scope = services.BuildServiceProvider().CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.MigrateAsync().GetAwaiter().GetResult();
+        });
+    }
+
+    public HttpClient CreateApiClient() => CreateClient();
 }

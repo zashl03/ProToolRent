@@ -28,6 +28,13 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!User.IsInRole(UserRole.Admin.ToString()) &&
+            (!Guid.TryParse(userIdClaim, out var currentUserId) || currentUserId != id))
+        {
+            return Forbid();
+        }
+
         var result = await _mediator.Send(new GetUserByIdQuery(id));
 
         return result.ErrorType switch
